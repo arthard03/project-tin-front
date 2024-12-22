@@ -1,0 +1,141 @@
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background: url('https://cdna.artstation.com/p/assets/images/images/016/322/076/large/jordan-snee-3dga-08.jpg?1551733292') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
+.navbar {
+  background: #2b1d0e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.nav-links {
+  list-style: none;
+  margin:0px;
+  padding: 0px;
+  display: flex;
+  gap: 6px;
+}
+.nav-links a {
+  text-decoration: none;
+  color: #f0e4c3;
+  font-size: 18px;
+}
+.content {
+  padding: 20px;
+  background: rgba(43, 29, 14, 0.9);
+  max-width: 800px;
+  margin: 20px auto;
+}
+h1 {
+  color: #f4d47c;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  margin: 10px 0;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+  li strong {
+    color: #f4d47c
+  }
+.page-layout {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 20px;
+}
+.page-content {
+  flex: 2;
+}
+.page-image {
+  flex: 1;
+  display: flex;
+}
+.page-image img {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.7);
+}
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.button-group button {
+  background-color: #5d4037;
+  color: #f4d47c;
+  border: 2px solid #8B4513;
+  padding: 10px 20px;
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.button-group button:hover {
+  background-color: #8B4513;
+  transform: scale(1.05);
+}
+
+.button-group button.active {
+  background-color: #3e2723;
+  color: #f4d47c;
+}
+form {
+  background: rgba(30, 20, 10, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #8B4513;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #8B4513;
+  color: #d4b483;
+}
+
+.form-actions button {
+  background-color: #5d4037;
+  color: #f4d47c;
+  border: 2px solid #8B4513;
+  padding: 10px 15px;
+  font-family: 'Cinzel', serif;
+  text-transform: uppercase;
+}
+
+.form-actions button:hover {
+  background-color: #8B4513;
+}
+.delete-btn, .edit-btn {
+  background-color: #5d4037;
+  color: #f4d47c;
+  border: 1px solid #8B4513;
+  padding: 8px 15px;
+}
+
+.delete-btn:hover, .edit-btn:hover {
+  background-color: #8B4513;
+}
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  font-weight: bold;
+}
