@@ -6,6 +6,14 @@ const Player = () => {
     const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [showForm, setShowForm] = useState(false);
+    const [editingPlayer, setEditingPlayer] = useState(null);
+    const [formData, setFormData] = useState({
+        name: '',
+        clazz: '',
+        speciality: '',
+        persuasionLevel: ''
+    });
     const pageSize = 2;
 
     const fetchPlayers = async (page = 0) => {
@@ -39,11 +47,114 @@ const Player = () => {
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const url = editingPlayer
+                ? `http://localhost:8080/Tavern/players/${editingPlayer.id}`
+                : 'http://localhost:8080/Tavern/players';
+
+            await fetch(url, {
+                method: editingPlayer ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(formData)
+            });
+            setShowForm(false);
+            setEditingPlayer(null);
+            setFormData({
+                name: '',
+                clazz: '',
+                speciality: '',
+                persuasionLevel: ''
+            });
+            fetchPlayers(currentPage);
+        } catch (err) {
+            setError(editingPlayer ? 'Failed to update player' : 'Failed to create player');
+        }
+    };
+
+    const startEdit = (player) => {
+        setEditingPlayer(player);
+        setFormData({
+            name: player.name,
+            clazz: player.clazz,
+            speciality: player.speciality,
+            persuasionLevel: player.persuasionLevel
+        });
+        setShowForm(true);
+    };
+
+    const handleDelete = async (playerId) => {
+        try {
+            await fetch(`http://localhost:8080/Tavern/players/${playerId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            fetchPlayers(currentPage);
+        } catch (err) {
+            setError('Failed to delete player');
+        }
+    };
+
     return (
         <div>
             <h1>Players Directory</h1>
             <button onClick={() => fetchPlayers(0)}>Load Players</button>
+            <button onClick={() => {
+                setShowForm(!showForm);
+                setEditingPlayer(null);
+                setFormData({
+                    name: '',
+                    clazz: '',
+                    speciality: '',
+                    persuasionLevel: ''
+                });
+            }}>Create Player
+            </button>
             {error && <p>{error}</p>}
+
+            {showForm && (
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Class"
+                            value={formData.clazz}
+                            onChange={(e) => setFormData({...formData, clazz: e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Speciality"
+                            value={formData.speciality}
+                            onChange={(e) => setFormData({...formData, speciality: e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="number"
+                            placeholder="Persuasion Level"
+                            value={formData.persuasionLevel}
+                            onChange={(e) => setFormData({...formData, persuasionLevel: e.target.value})}
+                        />
+                    </div>
+                    <button type="submit">{editingPlayer ? 'Update' : 'Submit'}</button>
+                </form>
+            )}
 
             {!selectedPlayer && players.length > 0 && (
                 <div>
@@ -55,16 +166,28 @@ const Player = () => {
                                 <p>Specialty: {player.speciality}</p>
                                 <p>Persuasion: {player.persuasionLevel}</p>
                                 <button onClick={() => fetchPlayerDetails(player.id)}>Details</button>
+                                <button onClick={() => {
+                                    startEdit(player);
+                                    setShowForm(!showForm);
+                                }}
+                                >Edit
+                                </button>
+                                <button onClick={() => handleDelete(player.id)}>Delete</button>
                             </div>
                         ))}
                     </div>
 
                     <div>
                         <button onClick={() => fetchPlayers(0)} disabled={currentPage === 0}>First</button>
-                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
+                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>Previous
+                        </button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
-                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
-                        <button onClick={() => fetchPlayers(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
+                        <button onClick={() => fetchPlayers(currentPage + 1)}
+                                disabled={currentPage === totalPages - 1}>Next
+                        </button>
+                        <button onClick={() => fetchPlayers(totalPages - 1)}
+                                disabled={currentPage === totalPages - 1}>Last
+                        </button>
                     </div>
                 </div>
             )}

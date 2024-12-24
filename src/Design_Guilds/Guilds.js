@@ -4,13 +4,23 @@ function Guilds() {
     const [guilds, setGuilds] = useState([]);
     const [selectedGuild, setSelectedGuild] = useState(null);
     const [error, setError] = useState('');
-
-    const fetchGuilds = async () => {
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        members: '',
+    });
+    const pageSize = 2;
+    const fetchGuilds = async (page = 0) => {
         try {
-            const response = await fetch('http://localhost:8080/Tavern/guilds/getAll');
+            const response = await fetch(`http://localhost:8080/Tavern/guilds/getAll?page=${page}&size=${pageSize}`);
             if (!response.ok) throw new Error('Failed to fetch guilds');
             const data = await response.json();
-            setGuilds(data);
+            setGuilds(data.content);
+            setTotalPages(data.totalPages);
+            setCurrentPage(page);
             setSelectedGuild(null);
             setError('');
         } catch (err) {
@@ -40,19 +50,35 @@ function Guilds() {
     return (
         <div>
             <h1>Guilds Directory</h1>
-            <button onClick={fetchGuilds}>Load Guilds</button>
+            <button onClick={()=> fetchGuilds(0)}>Load Guilds</button>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p>{error}</p>}
 
             {!selectedGuild && (
-                <ul>
-                    {guilds.map((guild) => (
-                        <li key={guild.guildID}>
-                            <strong>{guild.name}</strong> - {guild.description} ({guild.members} members)
-                            <button onClick={() => fetchGuildDetails(guild.guildID)}>Details</button>
-                        </li>
-                    ))}
-                </ul>
+                <div>
+                    <div>
+                        <ul>
+                            {guilds.map((guild) => (
+                                <li key={guild.guildID}>
+                                    <strong>{guild.name}</strong> - {guild.description} ({guild.members} members)
+                                    <button onClick={() => fetchGuildDetails(guild.guildID)}>Details</button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div>
+                        <button onClick={() => fetchGuilds(0)} disabled={currentPage === 0}>First</button>
+                        <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>Previous
+                        </button>
+                        <span>Page {currentPage + 1} of {totalPages}</span>
+                        <button onClick={() => fetchGuilds(currentPage + 1)}
+                                disabled={currentPage === totalPages - 1}>Next
+                        </button>
+                        <button onClick={() => fetchGuilds(totalPages - 1)}
+                                disabled={currentPage === totalPages - 1}>Last
+                        </button>
+                    </div>
+                </div>
             )}
 
             {selectedGuild && (

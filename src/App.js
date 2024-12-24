@@ -27,7 +27,7 @@ function App() {
                         <Route path="/rewards" element={<Rewards />} />
                         <Route path="/reward_claim" element={<RewardClaim />} />
                         <Route path="/player" element={<Player />} />
-                        <Route path="*" element={<Navigate to="/auth" />} />
+                        <Route path="*" element={<Navigate to="/guilds" />} />
                     </Routes>
                 </div>
             </div>
