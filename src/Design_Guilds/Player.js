@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 
 const Player = () => {
     const [players, setPlayers] = useState([]);
@@ -15,6 +15,10 @@ const Player = () => {
         persuasionLevel: ''
     });
     const pageSize = 2;
+
+    useEffect(() => {
+        fetchPlayers(0);
+    }, []);
 
     const fetchPlayers = async (page = 0) => {
         try {
@@ -38,7 +42,6 @@ const Player = () => {
             const response = await fetch(`http://localhost:8080/Tavern/players/relations/${playerId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
             const data = await response.json();
             setSelectedPlayer(data);
             setError('');
@@ -72,7 +75,7 @@ const Player = () => {
             });
             fetchPlayers(currentPage);
         } catch (err) {
-            setError(editingPlayer ? 'Failed to update player' : 'Failed to create player');
+            setError(editingPlayer ? 'F update player' : 'F  create player');
         }
     };
 
@@ -95,7 +98,7 @@ const Player = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            fetchPlayers(currentPage);
+            fetchPlayers(0);
         } catch (err) {
             setError('Failed to delete player');
         }
@@ -114,8 +117,7 @@ const Player = () => {
                     speciality: '',
                     persuasionLevel: ''
                 });
-            }}>Create Player
-            </button>
+            }}>{showForm ? 'Cancel' : 'Create Player'}</button>
             {error && <p>{error}</p>}
 
             {showForm && (
@@ -156,12 +158,12 @@ const Player = () => {
                 </form>
             )}
 
-            {!selectedPlayer && players.length > 0 && (
+            {!selectedPlayer && (
                 <div>
                     <div>
                         {players.map(player => (
                             <div key={player.id}>
-                                <h3>{player.name}</h3>
+                                <p><strong>{player.name}</strong></p>
                                 <p>Class: {player.clazz}</p>
                                 <p>Specialty: {player.speciality}</p>
                                 <p>Persuasion: {player.persuasionLevel}</p>
@@ -170,8 +172,7 @@ const Player = () => {
                                     startEdit(player);
                                     setShowForm(!showForm);
                                 }}
-                                >Edit
-                                </button>
+                                >Edit</button>
                                 <button onClick={() => handleDelete(player.id)}>Delete</button>
                             </div>
                         ))}
@@ -179,15 +180,10 @@ const Player = () => {
 
                     <div>
                         <button onClick={() => fetchPlayers(0)} disabled={currentPage === 0}>First</button>
-                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>Previous
-                        </button>
+                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
-                        <button onClick={() => fetchPlayers(currentPage + 1)}
-                                disabled={currentPage === totalPages - 1}>Next
-                        </button>
-                        <button onClick={() => fetchPlayers(totalPages - 1)}
-                                disabled={currentPage === totalPages - 1}>Last
-                        </button>
+                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
+                        <button onClick={() => fetchPlayers(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
                     </div>
                 </div>
             )}
@@ -206,6 +202,7 @@ const Player = () => {
                                 <p>Claim Date: {claim.claimDate}</p>
                                 <p>Finish Date: {claim.finishDate}</p>
                                 <p>Bounty ID: {claim.bountyID}</p>
+                                <p>Player ID: {claim.playerID}</p>
                             </div>
                         ))
                     ) : (

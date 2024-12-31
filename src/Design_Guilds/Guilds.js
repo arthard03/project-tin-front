@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 
 function Guilds() {
     const [guilds, setGuilds] = useState([]);
@@ -7,12 +7,18 @@ function Guilds() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
+    const [editingGuild, setEditingGuild] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        members: '',
+        members: ''
     });
     const pageSize = 2;
+    
+    useEffect(() => {
+        fetchGuilds(0);
+    }, []);
+
     const fetchGuilds = async (page = 0) => {
         try {
             const response = await fetch(`http://localhost:8080/Tavern/guilds/getAll?page=${page}&size=${pageSize}`);
@@ -24,21 +30,18 @@ function Guilds() {
             setSelectedGuild(null);
             setError('');
         } catch (err) {
-            setError('Could not load guilds. Please try again later.');
+            setError('Could not load guilds');
         }
     };
 
     const fetchGuildDetails = async (guildId) => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) throw new Error('Please log in to view guild details.');
+            if (!token) throw new Error('Please log in');
 
             const response = await fetch(`http://localhost:8080/Tavern/guilds/relations/${guildId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-
-            if (!response.ok) throw new Error(response.status === 403 ? 'Unauthorized access.' : 'Failed to fetch details.');
-
             const data = await response.json();
             setSelectedGuild(data);
             setError('');
@@ -46,61 +49,144 @@ function Guilds() {
             setError(err.message);
         }
     };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const url = editingGuild
+                ? `http://localhost:8080/Tavern/guilds/${editingGuild.guildID}`
+                : 'http://localhost:8080/Tavern/guilds';
 
+            await fetch(url, {
+                method: editingGuild ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(formData)
+            });
+            setShowForm(false);
+            setEditingGuild(null);
+            setFormData({
+                name: '',
+                description: '',
+                members: '',
+            });
+            fetchGuilds(currentPage);
+        } catch (err) {
+            setError(editingGuild ? 'F  update guild' : 'F create guild');
+        }
+    };
+    const startEdit = (guild) => {
+        setEditingGuild(guild);
+        setFormData({
+            name: guild.name,
+            description: guild.description,
+            members: guild.members
+        });
+        setShowForm(true);
+    };
+    const handleDelete = async (guildId) => {
+        try {
+            await fetch(`http://localhost:8080/Tavern/guilds/${guildId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            fetchGuilds(0);
+        } catch (err) {
+            setError('Failed to delete guild');
+        }
+    };
     return (
         <div>
             <h1>Guilds Directory</h1>
-            <button onClick={()=> fetchGuilds(0)}>Load Guilds</button>
-
+            <button onClick={() => fetchGuilds(0)}>Load Guilds</button>
+            <button onClick={() => {
+                setShowForm(!showForm);
+                setEditingGuild(null);
+                setFormData({
+                    name: '',
+                    description: '',
+                    members: ''
+                });
+            }}>{showForm ? 'Cancel' : 'Create Guild'}</button>
             {error && <p>{error}</p>}
-
+            {showForm && (
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Description"
+                            value={formData.description}
+                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="number"
+                            placeholder="Members"
+                            value={formData.members}
+                            onChange={(e) => setFormData({...formData, members: e.target.value})}
+                        />
+                    </div>
+                    <button type="submit">{editingGuild ? 'Update' : 'Submit'}</button>
+                </form>
+            )}
             {!selectedGuild && (
                 <div>
                     <div>
-                        <ul>
-                            {guilds.map((guild) => (
-                                <li key={guild.guildID}>
-                                    <strong>{guild.name}</strong> - {guild.description} ({guild.members} members)
+                            {guilds.map(guild => (
+                                <div key={guild.guildID}>
+                                    <p><strong>{guild.name}</strong></p>
+                                    <p>Description: {guild.description}</p>
+                                    <p>Members: {guild.members}</p>
                                     <button onClick={() => fetchGuildDetails(guild.guildID)}>Details</button>
-                                </li>
+                                    <button onClick={() => {
+                                        startEdit(guild);
+                                        setShowForm(!showForm);
+                                    }}>Edit</button>
+                                    <button onClick={() => handleDelete(guild.guildID)}>Delete</button>
+                                </div>
                             ))}
-                        </ul>
                     </div>
                     <div>
                         <button onClick={() => fetchGuilds(0)} disabled={currentPage === 0}>First</button>
-                        <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>Previous
-                        </button>
+                        <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
-                        <button onClick={() => fetchGuilds(currentPage + 1)}
-                                disabled={currentPage === totalPages - 1}>Next
-                        </button>
-                        <button onClick={() => fetchGuilds(totalPages - 1)}
-                                disabled={currentPage === totalPages - 1}>Last
-                        </button>
+                        <button onClick={() => fetchGuilds(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
+                        <button onClick={() => fetchGuilds(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
                     </div>
                 </div>
             )}
 
             {selectedGuild && (
                 <div>
-                    <h2><strong>Guild: </strong>{selectedGuild.name}</h2>
-                    <p><strong>Description: </strong>{selectedGuild.description}</p>
-                    <p><strong>Members: </strong>{selectedGuild.members}</p>
+                    <h2>Guild: {selectedGuild.name}</h2>
+                    <p>Description: {selectedGuild.description}</p>
+                    <p>Members: {selectedGuild.members}</p>
 
                     <h3>Bounties</h3>
                     {selectedGuild.bounty?.length ? (
-                        <ul>
-                            {selectedGuild.bounty.map((bounty) => (
-                                <li key={bounty.bountyID}>
-                                    <p><strong>Reward:</strong> {bounty.reward} gold</p>
-                                    <p><strong>Description:</strong>{bounty.description}</p>
-                                    <p><strong>Difficulty:</strong> {bounty.difficulty}</p>
-                                    <p><strong>Status:</strong> {bounty.status}</p></li>
-                            ))}
-                        </ul>
+                            selectedGuild.bounty.map((bounty) => (
+                                <div key={bounty.bountyID}>
+                                    <p>Reward: {bounty.reward} gold</p>
+                                    <p>Description: {bounty.description}</p>
+                                    <p>Difficulty: {bounty.difficulty}</p>
+                                    <p>Status: {bounty.status}</p></div>
+                            ))
                     ) : (
                         <p>No active bounties</p>
                     )}
+                    <button onClick={() => setSelectedGuild(null)}>Back to List</button>
                 </div>
             )}
         </div>

@@ -33,6 +33,10 @@ body {
 h1 {
   color: #f4d47c;
 }
+strong{
+  color: #f4d47c;
+
+}
 ul {
   list-style: none;
   padding: 0;
