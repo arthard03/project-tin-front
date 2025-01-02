@@ -1,9 +1,10 @@
 import React, {useEffect, useState } from 'react';
-
+import  {validateGuildData} from '../Validation/GuildValidation';
 function Guilds() {
     const [guilds, setGuilds] = useState([]);
     const [selectedGuild, setSelectedGuild] = useState(null);
     const [error, setError] = useState('');
+    const [validationErrors, setValidationErrors] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
@@ -51,6 +52,11 @@ function Guilds() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validateGuildData(formData);
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         try {
             const url = editingGuild
                 ? `http://localhost:8080/Tavern/guilds/${editingGuild.guildID}`
@@ -71,6 +77,7 @@ function Guilds() {
                 description: '',
                 members: '',
             });
+            setValidationErrors({});
             fetchGuilds(currentPage);
         } catch (err) {
             setError(editingGuild ? 'F  update guild' : 'F create guild');
@@ -121,6 +128,7 @@ function Guilds() {
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
                         />
+                        {validationErrors.name && <p style={{color: 'red'}}>{validationErrors.name}</p>}
                     </div>
                     <div>
                         <input
@@ -129,14 +137,16 @@ function Guilds() {
                             value={formData.description}
                             onChange={(e) => setFormData({...formData, description: e.target.value})}
                         />
+                        {validationErrors.description && <p style={{color: 'red'}}>{validationErrors.description}</p>}
                     </div>
                     <div>
                         <input
                             type="number"
                             placeholder="Members"
                             value={formData.members}
-                            onChange={(e) => setFormData({...formData, members: e.target.value})}
+                            onChange={(e) => setFormData({...formData, members: parseInt(e.target.value, 10)})}
                         />
+                        {validationErrors.members && <p style={{color: 'red'}}>{validationErrors.members}</p>}
                     </div>
                     <button type="submit">{editingGuild ? 'Update' : 'Submit'}</button>
                 </form>
@@ -159,11 +169,9 @@ function Guilds() {
                             ))}
                     </div>
                     <div>
-                        <button onClick={() => fetchGuilds(0)} disabled={currentPage === 0}>First</button>
                         <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
                         <button onClick={() => fetchGuilds(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
-                        <button onClick={() => fetchGuilds(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
                     </div>
                 </div>
             )}

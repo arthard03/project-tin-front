@@ -1,20 +1,21 @@
 import React, {useEffect, useState} from 'react';
-
+import {validateRewardData} from '../Validation/rewardValidation';
 function Rewards() {
     const [bounties, setBounties] = useState([]);
     const [selectedBounty, setSelectedBounty] = useState(null);
     const [error, setError] = useState('');
+    const [validationErrors, setValidationErrors] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [editingBounty, setEditingBounty] = useState(null);
-    const [formData, setFormData] = useState({
-        description: '',
-        reward: '',
-        status: '',
-        difficulty: '',
-        guild: ''
-    });
+        const [formData, setFormData] = useState({
+            description: '',
+            reward: '',
+            status: '',
+            difficulty: '',
+            guild: ''
+        });
     const pageSize = 2;
 
     useEffect(() => {
@@ -52,13 +53,15 @@ function Rewards() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validateRewardData(formData); 
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors); 
+            return;
+        }
         try {
             const url = editingBounty
                 ? `http://localhost:8080/Tavern/bounties/${editingBounty.bountyID}`
                 : 'http://localhost:8080/Tavern/bounties';
-
-            // Adjust `guild` to send as `guildID` in the backend
-            // const payload = { ...formData, guildID: formData.guild };
 
             await fetch(url, {
                 method: editingBounty ? 'PUT' : 'POST',
@@ -77,6 +80,7 @@ function Rewards() {
                 difficulty: '',
                 guild: ''
             });
+            setValidationErrors({});
             fetchBounties(currentPage);
         } catch (err) {
             setError(editingBounty ? 'Failed to update bounty' : 'Failed to create bounty');
@@ -132,6 +136,7 @@ function Rewards() {
                             value={formData.description}
                             onChange={(e) => setFormData({...formData, description: e.target.value})}
                         />
+                        {validationErrors.description && <p style={{color: 'red'}}>{validationErrors.description}</p>}
                     </div>
                     <div>
                         <input
@@ -140,6 +145,7 @@ function Rewards() {
                             value={formData.reward}
                             onChange={(e) => setFormData({...formData, reward: e.target.value})}
                         />
+                        {validationErrors.reward && <p style={{color: 'red'}}>{validationErrors.reward}</p>}
                     </div>
                     <div>
                         <input
@@ -148,6 +154,7 @@ function Rewards() {
                             value={formData.status}
                             onChange={(e) => setFormData({...formData, status: e.target.value})}
                         />
+                        {validationErrors.status && <p style={{color: 'red'}}>{validationErrors.status}</p>}
                     </div>
                     <div>
                         <input
@@ -156,6 +163,7 @@ function Rewards() {
                             value={formData.difficulty}
                             onChange={(e) => setFormData({...formData, difficulty: e.target.value})}
                         />
+                        {validationErrors.difficulty && <p style={{color: 'red'}}>{validationErrors.difficulty}</p>}
                     </div>
                     <div>
                         <input
@@ -164,6 +172,7 @@ function Rewards() {
                             value={formData.guildID}
                             onChange={(e) => setFormData({...formData, guildID: e.target.value})}
                         />
+                        {validationErrors.guildID && <p style={{color: 'red'}}>{validationErrors.guildID}</p>}
                     </div>
                     <button type="submit">{editingBounty ? 'Update' : 'Submit'}</button>
                 </form>
@@ -187,11 +196,9 @@ function Rewards() {
                         ))}
                     </div>
                     <div>
-                        <button onClick={() => fetchBounties(0)} disabled={currentPage === 0}>First</button>
                         <button onClick={() => fetchBounties(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
                         <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
-                        <button onClick={() => fetchBounties(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
                     </div>
                 </div>
             )}

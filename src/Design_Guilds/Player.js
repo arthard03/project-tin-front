@@ -1,9 +1,11 @@
 import React, {useEffect, useState } from 'react';
+import { validatePlayerData } from '../Validation/playerValidation'; // Import the validation module
 
 const Player = () => {
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [error, setError] = useState('');
+    const [validationErrors, setValidationErrors] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
@@ -52,6 +54,11 @@ const Player = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validatePlayerData(formData); // Use your validation function
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors); // Update state to display errors in the UI
+            return; // Stop submission if there are validation errors
+        }
         try {
             const url = editingPlayer
                 ? `http://localhost:8080/Tavern/players/${editingPlayer.id}`
@@ -73,6 +80,7 @@ const Player = () => {
                 speciality: '',
                 persuasionLevel: ''
             });
+            setValidationErrors({}); // Clear validation errors
             fetchPlayers(currentPage);
         } catch (err) {
             setError(editingPlayer ? 'F update player' : 'F  create player');
@@ -129,6 +137,7 @@ const Player = () => {
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
                         />
+                        {validationErrors.name && <p style={{color: 'red'}}>{validationErrors.name}</p>}
                     </div>
                     <div>
                         <input
@@ -137,6 +146,7 @@ const Player = () => {
                             value={formData.clazz}
                             onChange={(e) => setFormData({...formData, clazz: e.target.value})}
                         />
+                        {validationErrors.clazz && <p style={{color: 'red'}}>{validationErrors.clazz}</p>}
                     </div>
                     <div>
                         <input
@@ -145,14 +155,16 @@ const Player = () => {
                             value={formData.speciality}
                             onChange={(e) => setFormData({...formData, speciality: e.target.value})}
                         />
+                        {validationErrors.speciality && <p style={{color: 'red'}}>{validationErrors.speciality}</p>}
                     </div>
                     <div>
                         <input
                             type="number"
                             placeholder="Persuasion Level"
                             value={formData.persuasionLevel}
-                            onChange={(e) => setFormData({...formData, persuasionLevel: e.target.value})}
+                            onChange={(e) => setFormData({...formData, persuasionLevel: parseInt(e.target.value, 10)})}
                         />
+                        {validationErrors.persuasionLevel && <p style={{color: 'red'}}>{validationErrors.persuasionLevel}</p>}
                     </div>
                     <button type="submit">{editingPlayer ? 'Update' : 'Submit'}</button>
                 </form>
@@ -179,11 +191,9 @@ const Player = () => {
                     </div>
 
                     <div>
-                        <button onClick={() => fetchPlayers(0)} disabled={currentPage === 0}>First</button>
                         <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
                         <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
-                        <button onClick={() => fetchPlayers(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
                     </div>
                 </div>
             )}

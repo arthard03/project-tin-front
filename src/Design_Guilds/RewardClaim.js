@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import {validateRewardClaimData} from '../Validation/RewardClaimValidation'
 function RewardClaim() {
     const [bountiesClaim, setBountiesClaim] = useState([]);
     const [selectedBountiesClaim, setSelectedBountiesClaim] = useState(null);
     const [error, setError] = useState('');
+    const [validationErrors, setValidationErrors] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
@@ -54,6 +55,11 @@ function RewardClaim() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validateRewardClaimData(formData);
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         try {
             const url = editingBountyClaim
                 ? `http://localhost:8080/Tavern/bountiesClaim/${editingBountyClaim.claimID}`
@@ -78,6 +84,7 @@ function RewardClaim() {
                 finishDate: '',
                 playerID: ''
             });
+            setValidationErrors({});
             fetchBountiesClaims(currentPage);
         } catch (err) {
             setError(editingBountyClaim ? 'Failed to update bounty claim.' : 'Failed to create bounty claim.');
@@ -135,6 +142,7 @@ function RewardClaim() {
                             value={formData.bountyID}
                             onChange={(e) => setFormData({ ...formData, bountyID: e.target.value })}
                         />
+                        {validationErrors.bountyID && <p style={{color: 'red'}}>{validationErrors.bountyID}</p>}
                     </div>
                     <div>
                         <input
@@ -143,6 +151,7 @@ function RewardClaim() {
                             value={formData.claimDate}
                             onChange={(e) => setFormData({ ...formData, claimDate: e.target.value })}
                         />
+                        {validationErrors.claimDate && <p style={{color: 'red'}}>{validationErrors.claimDate}</p>}
                     </div>
                     <div>
                         <input
@@ -151,6 +160,7 @@ function RewardClaim() {
                             value={formData.finishDate}
                             onChange={(e) => setFormData({ ...formData, finishDate: e.target.value })}
                         />
+                        {validationErrors.finishDate && <p style={{color: 'red'}}>{validationErrors.finishDate}</p>}
                     </div>
                     <div>
                         <input
@@ -159,6 +169,7 @@ function RewardClaim() {
                             value={formData.playerID}
                             onChange={(e) => setFormData({ ...formData, playerID: e.target.value })}
                         />
+                        {validationErrors.playerID && <p style={{color: 'red'}}>{validationErrors.playerID}</p>}
                     </div>
                     <button type="submit">{editingBountyClaim ? 'Update' : 'Submit'}</button>
                 </form>
@@ -168,10 +179,8 @@ function RewardClaim() {
                     <div>
                         {bountiesClaim.map(bountyClaim => (
                             <div key={bountyClaim.claimID}>
-                                <p>Bounty ID: {bountyClaim.bountyID}</p>
                                 <p>Claim Date: {bountyClaim.claimDate}</p>
                                 <p>Finish Date: {bountyClaim.finishDate}</p>
-                                <p>Player ID: {bountyClaim.playerID}</p>
                                 <button onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>Details</button>
                                 <button onClick={() => {
                                     startEdit(bountyClaim);
@@ -185,11 +194,9 @@ function RewardClaim() {
                     </div>
 
                     <div>
-                        <button onClick={() => fetchBountiesClaims(0)} disabled={currentPage === 0}>First</button>
                         <button onClick={() => fetchBountiesClaims(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
                         <span>Page {currentPage + 1} of {totalPages}</span>
                         <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
-                        <button onClick={() => fetchBountiesClaims(totalPages - 1)} disabled={currentPage === totalPages - 1}>Last</button>
                     </div>
                 </div>
             )}

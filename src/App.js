@@ -8,6 +8,13 @@ import AuthenticationPage from './Design_Guilds/register';
 import './App.css';
 
 function App() {
+    const isAuthenticated = !!  localStorage.getItem('token');
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.href = '/auth';
+    };
+
     return (
         <Router>
             <div className="App">
@@ -18,6 +25,9 @@ function App() {
                         <li><Link to="/rewards">Rewards</Link></li>
                         <li><Link to="/reward_claim">Reward Claim</Link></li>
                         <li><Link to="/player">Player</Link></li>
+                        {isAuthenticated && (
+                            <li><button onClick={handleLogout} className="nav-link-button">Logout</button></li>
+                        )}
                     </ul>
                 </header>
                 <div className="content">
