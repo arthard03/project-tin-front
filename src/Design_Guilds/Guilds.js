@@ -154,19 +154,20 @@ function Guilds() {
             {!selectedGuild && (
                 <div>
                     <div>
-                            {guilds.map(guild => (
-                                <div key={guild.guildID}>
-                                    <p><strong>{guild.name}</strong></p>
-                                    <p>Description: {guild.description}</p>
-                                    <p>Members: {guild.members}</p>
-                                    <button onClick={() => fetchGuildDetails(guild.guildID)}>Details</button>
-                                    <button onClick={() => {
-                                        startEdit(guild);
-                                        setShowForm(!showForm);
-                                    }}>Edit</button>
-                                    <button onClick={() => handleDelete(guild.guildID)}>Delete</button>
-                                </div>
-                            ))}
+                        {guilds.map(guild => (
+                            <div key={guild.guildID}>
+                                <p><strong>{guild.name}</strong></p>
+                                <p>Description: {guild.description}</p>
+                                <p>Members: {guild.members}</p>
+                                <button onClick={() => fetchGuildDetails(guild.guildID)}>Details</button>
+                                <button onClick={() => {
+                                    startEdit(guild);
+                                    setShowForm(!showForm);
+                                }}>Edit
+                                </button>
+                                <button onClick={() => handleDelete(guild.guildID)}>Delete</button>
+                            </div>
+                        ))}
                     </div>
                     <div>
                         <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
@@ -184,19 +185,23 @@ function Guilds() {
 
                     <h3>Bounties</h3>
                     {selectedGuild.bounty?.length ? (
-                            selectedGuild.bounty.map((bounty) => (
-                                <div key={bounty.bountyID}>
-                                    <p>Reward: {bounty.reward} gold</p>
-                                    <p>Description: {bounty.description}</p>
-                                    <p>Difficulty: {bounty.difficulty}</p>
-                                    <p>Status: {bounty.status}</p></div>
-                            ))
+                        selectedGuild.bounty.map((bounty) => (
+                            <div key={bounty.bountyID}>
+                                <p>Reward: {bounty.reward} gold</p>
+                                <p>Description: {bounty.description}</p>
+                                <p>Difficulty: {bounty.difficulty}</p>
+                                <p>Status: {bounty.status}</p></div>
+                        ))
                     ) : (
                         <p>No active bounties</p>
                     )}
                     <button onClick={() => setSelectedGuild(null)}>Back to List</button>
                 </div>
             )}
+            <div className="page-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoc2NfFplgbKgaz6jXpQAVDCDNVVkjExaO5A&s"
+                     alt="Guild Visual"/>
+            </div>
         </div>
     );
 }

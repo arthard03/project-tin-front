@@ -14,7 +14,7 @@ body {
 }
 .nav-links {
   list-style: none;
-  margin:0px;
+  margin: 0px;
   padding: 0px;
   display: flex;
   gap: 6px;
@@ -41,7 +41,7 @@ body {
 h1 {
   color: #f4d47c;
 }
-strong{
+strong {
   color: #f4d47c;
 }
 ul {
@@ -54,14 +54,14 @@ li {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 5px;
 }
-  li strong {
-    color: #f4d47c
-  }
+li strong {
+  color: #f4d47c;
+}
 .page-layout {
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 20px;
   gap: 20px;
 }
@@ -69,11 +69,14 @@ li {
   flex: 2;
 }
 .page-image {
-  flex: 1;
-  display: flex;
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  width: 300px;
 }
+
 .page-image img {
-  max-width: 100%;
+  width: 100%;
   max-height: 400px;
   object-fit: cover;
   border-radius: 10px;
@@ -96,6 +99,7 @@ form textarea {
   border: 1px solid #8B4513;
   color: #d4b483;
 }
+
 .error {
   color: red;
   font-size: 14px;

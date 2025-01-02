@@ -164,7 +164,8 @@ const Player = () => {
                             value={formData.persuasionLevel}
                             onChange={(e) => setFormData({...formData, persuasionLevel: parseInt(e.target.value, 10)})}
                         />
-                        {validationErrors.persuasionLevel && <p style={{color: 'red'}}>{validationErrors.persuasionLevel}</p>}
+                        {validationErrors.persuasionLevel &&
+                            <p style={{color: 'red'}}>{validationErrors.persuasionLevel}</p>}
                     </div>
                     <button type="submit">{editingPlayer ? 'Update' : 'Submit'}</button>
                 </form>
@@ -184,7 +185,8 @@ const Player = () => {
                                     startEdit(player);
                                     setShowForm(!showForm);
                                 }}
-                                >Edit</button>
+                                >Edit
+                                </button>
                                 <button onClick={() => handleDelete(player.id)}>Delete</button>
                             </div>
                         ))}
@@ -222,6 +224,11 @@ const Player = () => {
                     <button onClick={() => setSelectedPlayer(null)}>Back to List</button>
                 </div>
             )}
+            <div className="page-image">
+                <img
+                    src="https://preview.redd.it/custom-class-concept-magefist-a-more-immersive-roleplay-v0-syb2s83a4a6a1.jpg?width=1000&format=pjpg&auto=webp&s=a6d9b497fc8f777f8721e67410aa603ef9610175"
+                    alt="Guild Visual"/>
+            </div>
         </div>
     );
 };

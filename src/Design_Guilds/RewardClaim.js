@@ -132,7 +132,7 @@ function RewardClaim() {
                         playerID: ''
                     });
                 }}>{showForm ? 'Cancel' : 'Create Bounty Claim'}</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -140,7 +140,7 @@ function RewardClaim() {
                             type="number"
                             placeholder="Bounty ID"
                             value={formData.bountyID}
-                            onChange={(e) => setFormData({ ...formData, bountyID: e.target.value })}
+                            onChange={(e) => setFormData({...formData, bountyID: e.target.value})}
                         />
                         {validationErrors.bountyID && <p style={{color: 'red'}}>{validationErrors.bountyID}</p>}
                     </div>
@@ -149,7 +149,7 @@ function RewardClaim() {
                             type="date"
                             placeholder="Claim Date"
                             value={formData.claimDate}
-                            onChange={(e) => setFormData({ ...formData, claimDate: e.target.value })}
+                            onChange={(e) => setFormData({...formData, claimDate: e.target.value})}
                         />
                         {validationErrors.claimDate && <p style={{color: 'red'}}>{validationErrors.claimDate}</p>}
                     </div>
@@ -158,7 +158,7 @@ function RewardClaim() {
                             type="date"
                             placeholder="Finish Date"
                             value={formData.finishDate}
-                            onChange={(e) => setFormData({ ...formData, finishDate: e.target.value })}
+                            onChange={(e) => setFormData({...formData, finishDate: e.target.value})}
                         />
                         {validationErrors.finishDate && <p style={{color: 'red'}}>{validationErrors.finishDate}</p>}
                     </div>
@@ -167,7 +167,7 @@ function RewardClaim() {
                             type="number"
                             placeholder="Player ID"
                             value={formData.playerID}
-                            onChange={(e) => setFormData({ ...formData, playerID: e.target.value })}
+                            onChange={(e) => setFormData({...formData, playerID: e.target.value})}
                         />
                         {validationErrors.playerID && <p style={{color: 'red'}}>{validationErrors.playerID}</p>}
                     </div>
@@ -185,8 +185,7 @@ function RewardClaim() {
                                 <button onClick={() => {
                                     startEdit(bountyClaim);
                                     setShowForm(true);
-                                }}>
-                                    Edit
+                                }}>Edit
                                 </button>
                                 <button onClick={() => handleDelete(bountyClaim.claimID)}>Delete</button>
                             </div>
@@ -233,6 +232,11 @@ function RewardClaim() {
                     <button onClick={() => setSelectedBountiesClaim(null)}>Back to List</button>
                 </div>
             )}
+            <div className="page-image">
+                <img
+                    src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRn40pE1BoWV7_cztAfYkT6_gLJ0wgBEwN3L5Yd_ZZJRYp4zKPJ"
+                    alt="Guild Visual"/>
+            </div>
         </div>
     );
 }

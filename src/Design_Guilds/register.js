@@ -83,6 +83,10 @@ function AuthenticationPage() {
             <button onClick={() => setIsRegistering(!isRegistering)}>
                 {isRegistering ? 'Already have an account? Login' : 'Don\'t have an account? Register'}
             </button>
+            <div className="page-image">
+                <img src="https://static1.thegamerimages.com/wordpress/wp-content/uploads/2020/12/oblivion-guard-the-elder-scrolls.jpg"
+                     alt="Guild Visual"/>
+            </div>
         </div>
     );
 }

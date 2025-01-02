@@ -190,7 +190,8 @@ function Rewards() {
                                 <button onClick={() => {
                                     startEdit(bounty);
                                     setShowForm(!showForm);
-                                }}>Edit</button>
+                                }}>Edit
+                                </button>
                                 <button onClick={() => handleDelete(bounty.bountyID)}>Delete</button>
                             </div>
                         ))}
@@ -224,18 +225,22 @@ function Rewards() {
                     )}
                     <h3>Guild</h3>
                     {selectedBounty.guildDTOS?.length ? (
-                            selectedBounty.guildDTOS.map((guild) => (
-                                <div key={guild.guildID}>
-                                    <p>Name: {guild.name} gold</p>
-                                    <p>Description: {guild.description}</p>
-                                    <p>Members: {guild.members}</p></div>
-                            ))
+                        selectedBounty.guildDTOS.map((guild) => (
+                            <div key={guild.guildID}>
+                                <p>Name: {guild.name} gold</p>
+                                <p>Description: {guild.description}</p>
+                                <p>Members: {guild.members}</p></div>
+                        ))
                     ) : (
                         <p>No active guilds</p>
                     )}
                     <button onClick={() => setSelectedBounty(null)}>Back to List</button>
                 </div>
             )}
+            <div className="page-image">
+                <img src="https://pbs.twimg.com/media/FsGU-mHX0AMVvYi.jpg"
+                     alt="Guild Visual"/>
+            </div>
         </div>
     );
 }
