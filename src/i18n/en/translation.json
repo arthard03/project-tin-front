@@ -17,17 +17,17 @@
     "cancel": "Cancel",
     "form": {
       "name": {
-        "placeholder": "Name",
+        "placeholder": "Name ",
         "required": "Name is required",
         "length": "Name must be between 10 and 30 characters"
       },
       "description": {
-        "placeholder": "Description",
+        "placeholder": "Description ",
         "required": "Description is required",
         "length": "Description must be between 10 and 150 characters"
       },
       "members": {
-        "placeholder": "Members",
+        "placeholder": "Members ",
         "required": "Members Level is required",
         "invalid": "Members must be a positive integer with up to 10 digits"
       }
@@ -43,7 +43,8 @@
     "pagination": {
       "previous": "Previous",
       "next": "Next",
-      "page": "Page"
+      "page": "Page",
+      "of": "of"
     },
     "guildDetails": {
       "title": "Guild: ",
@@ -69,7 +70,8 @@
     "password_required": "Password is required.",
     "password_invalid": "Password must be at least 10 characters.",
     "have_acc": "Already have an account? Login",
-    "dont_have_acc": "Don't have an account? Register"
+    "dont_have_acc": "Don't have an account? Register",
+    "error": "An unexpected error occurred."
   },
 "playerPage": {
   "playerDirectory": "Players Directory",
@@ -83,6 +85,7 @@
   "previous": "Previous",
   "page": "Page",
   "of": "of",
+  "back": "Back to List",
   "next": "Next",
   "bounty_claim": "Bounty Claims",
   "bounty_claim_date": "Claim Date: ",
@@ -146,5 +149,43 @@
     "status_invalid": "Status must be a single digit between 0 and 1",
     "difficulty_invalid": "Difficulty must be between 4 and 20 characters",
     "guild_invalid": "Guild ID must be a valid integer"
-  }
+  },
+"rewardClaim": {
+  "directory": "Bounty Claims Directory",
+  "load": "Load Bounty Claims",
+  "cancel": "Cancel",
+  "create": "Create Bounty Claim",
+  "bountyID": "Bounty ID",
+  "claimDate": "Claim Date",
+  "finishDate": "Finish Date",
+  "playerID": "Player ID",
+  "update": "Update",
+  "submit": "Submit",
+  "details": "Details",
+  "edit": "Edit",
+  "delete": "Delete",
+  "previous": "Previous",
+  "page": "Page",
+  "of": "of",
+  "next": "Next",
+  "bountyDetails": "Bounty Details",
+  "b_desc": "Description",
+  "r_bounty": "Reward",
+  "status": "Status",
+  "b_difficulty": "Difficulty",
+  "b_no_active": "No active bounty details available.",
+  "player_details": "Player Details",
+  "player_name": "Name",
+  "player_class": "Class",
+  "player_speciality": "Speciality",
+  "player_persuasion": "Persuasion Level",
+  "player_no_active": "No active player details available.",
+  "back": "Back to List",
+  "bountyID_invalid": "Bounty ID is required",
+  "bountyID_required": "Bounty ID must be a valid integer",
+  "claimDate_invalid": "Claim Date is required",
+  "finishDate_invalid": "Finish Date cannot be earlier than Claim Date",
+  "playerID_required": "Player ID is required",
+  "playerID_invalid": "Player ID must be a valid integer"
+}
 }

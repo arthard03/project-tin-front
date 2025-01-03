@@ -17,17 +17,17 @@
     "cancel": "Anuluj",
     "form": {
       "name": {
-        "placeholder": "Nazwa",
+        "placeholder": "Nazwa ",
         "required": "Nazwa jest wymagana",
         "length": "Nazwa musi mieć od 10 do 30 znaków"
       },
       "description": {
-        "placeholder": "Opis",
+        "placeholder": "Opis ",
         "required": "Opis jest wymagany",
         "length": "Opis musi mieć od 10 do 150 znaków"
       },
       "members": {
-        "placeholder": "Członkowie",
+        "placeholder": "Członkowie ",
         "required": "Liczba członków jest wymagana",
         "invalid": "Liczba członków musi być dodatnią liczbą całkowitą do 10 cyfr"
       }
@@ -70,9 +70,12 @@
     "password_required": "Hasło jest wymagane.",
     "password_invalid": "Hasło musi mieć co najmniej 10 znaków.",
     "have_acc": "Masz już konto? Zaloguj się",
-    "dont_have_acc": "Nie masz konta? Zarejestruj się"
+    "dont_have_acc": "Nie masz konta? Zarejestruj się",
+    "error": "Wystąpił nieoczekiwany błąd."
+
   },
   "playerPage": {
+    "back": "Powrót do listy",
     "playerDirectory": "Katalog Graczy",
     "load": "Wczytaj Graczy",
     "create": "Utwórz Gracza",
@@ -147,5 +150,43 @@
     "status_invalid": "Status musi być pojedynczą cyfrą od 0 do 1",
     "difficulty_invalid": "Trudność musi mieć od 4 do 20 znaków",
     "guild_invalid": "ID Gildii musi być prawidłową liczbą całkowitą"
+  },
+  "rewardClaim": {
+    "directory": "Katalog Roszczeń Nagród",
+    "load": "Wczytaj Roszczenia Nagród",
+    "cancel": "Anuluj",
+    "create": "Utwórz Roszczenie Nagrody",
+    "bountyID": "ID Nagrody",
+    "claimDate": "Data Roszczenia",
+    "finishDate": "Data Zakończenia",
+    "playerID": "ID Gracza",
+    "update": "Aktualizuj",
+    "submit": "Wyślij",
+    "details": "Szczegóły",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "previous": "Poprzednia",
+    "page": "Strona",
+    "of": "z",
+    "next": "Następna",
+    "bountyDetails": "Szczegóły Nagrody",
+    "b_desc": "Opis",
+    "r_bounty": "Nagroda",
+    "status": "Status",
+    "b_difficulty": "Trudność",
+    "b_no_active": "Brak dostępnych szczegółów aktywnej nagrody.",
+    "player_details": "Szczegóły Gracza",
+    "player_name": "Imię",
+    "player_class": "Klasa",
+    "player_speciality": "Specjalizacja",
+    "player_persuasion": "Poziom Perswazji",
+    "player_no_active": "Brak dostępnych szczegółów aktywnego gracza.",
+    "back": "Powrót do listy",
+    "bountyID_invalid": "ID nagrody jest wymagane",
+    "bountyID_required": "ID nagrody musi być prawidłową liczbą całkowitą",
+    "claimDate_invalid": "Data roszczenia jest wymagana",
+    "finishDate_invalid": "Data zakończenia nie może być wcześniejsza niż data roszczenia",
+    "playerID_required": "ID gracza jest wymagane",
+    "playerID_invalid": "ID gracza musi być prawidłową liczbą całkowitą"
   }
 }

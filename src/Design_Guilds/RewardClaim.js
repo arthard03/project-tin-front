@@ -60,7 +60,7 @@ function RewardClaim() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validateRewardClaimData(formData);
+        const errors = validateRewardClaimData(formData,t);
         if (Object.keys(errors).length > 0) {
             setValidationErrors(errors);
             return;
@@ -132,8 +132,8 @@ function RewardClaim() {
 
     return (
         <div>
-            <h1>Bounty Claims Directory</h1>
-            <button onClick={() => fetchBountiesClaims(0)}>Load Bounty Claims</button>
+            <h1>{t('rewardClaim.directory')}</h1>
+            <button onClick={() => fetchBountiesClaims(0)}>{t('rewardClaim.load')}</button>
             <button
                 onClick={() => {
                     setShowForm(!showForm);
@@ -144,14 +144,14 @@ function RewardClaim() {
                         finishDate: '',
                         playerID: ''
                     });
-                }}>{showForm ? 'Cancel' : 'Create Bounty Claim'}</button>
+                }}>{showForm ? t('rewardClaim.cancel') : t('rewardClaim.create')}</button>
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input
                             type="number"
-                            placeholder="Bounty ID"
+                            placeholder={t('rewardClaim.bountyID')}
                             value={formData.bountyID}
                             onChange={(e) => setFormData({...formData, bountyID: e.target.value})}
                         />
@@ -160,7 +160,7 @@ function RewardClaim() {
                     <div>
                         <input
                             type="date"
-                            placeholder="Claim Date"
+                            placeholder={t('rewardClaim.claimDate')}
                             value={formData.claimDate}
                             onChange={(e) => setFormData({...formData, claimDate: e.target.value})}
                         />
@@ -169,7 +169,7 @@ function RewardClaim() {
                     <div>
                         <input
                             type="date"
-                            placeholder="Finish Date"
+                            placeholder={t('rewardClaim.finishDate')}
                             value={formData.finishDate}
                             onChange={(e) => setFormData({...formData, finishDate: e.target.value})}
                         />
@@ -178,13 +178,13 @@ function RewardClaim() {
                     <div>
                         <input
                             type="number"
-                            placeholder="Player ID"
+                            placeholder={t('rewardClaim.playerID')}
                             value={formData.playerID}
                             onChange={(e) => setFormData({...formData, playerID: e.target.value})}
                         />
                         {validationErrors.playerID && <p style={{color: 'red'}}>{validationErrors.playerID}</p>}
                     </div>
-                    <button type="submit">{editingBountyClaim ? 'Update' : 'Submit'}</button>
+                    <button type="submit">{editingBountyClaim ? t('rewardClaim.update') :t('rewardClaim.submit') }</button>
                 </form>
             )}
             {!selectedBountiesClaim && (
@@ -192,57 +192,57 @@ function RewardClaim() {
                     <div>
                         {bountiesClaim.map(bountyClaim => (
                             <div key={bountyClaim.claimID}>
-                                <p>Claim Date: {bountyClaim.claimDate}</p>
-                                <p>Finish Date: {bountyClaim.finishDate}</p>
-                                <button onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>Details</button>
+                                <p>{t('rewardClaim.claimDate')} {bountyClaim.claimDate}</p>
+                                <p>{t('rewardClaim.finishDate')} {bountyClaim.finishDate}</p>
+                                <button onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>{t('rewardClaim.details')}</button>
                                 <button onClick={() => {
                                     startEdit(bountyClaim);
                                     setShowForm(true);
-                                }}>Edit
+                                }}>{t('rewardClaim.edit')}
                                 </button>
-                                <button onClick={() => handleDelete(bountyClaim.claimID)}>Delete</button>
+                                <button onClick={() => handleDelete(bountyClaim.claimID)}>{t('rewardClaim.delete')}</button>
                             </div>
                         ))}
                     </div>
 
                     <div>
-                        <button onClick={() => fetchBountiesClaims(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
-                        <span>Page {currentPage + 1} of {totalPages}</span>
-                        <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
+                        <button onClick={() => fetchBountiesClaims(currentPage - 1)} disabled={currentPage === 0}>{t('rewardClaim.previous')}</button>
+                        <span>{t('rewardClaim.page')} {currentPage + 1} {t('rewardClaim.of')} {totalPages}</span>
+                        <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('rewardClaim.next')}</button>
                     </div>
                 </div>
             )}
             {selectedBountiesClaim && (
                 <div>
-                    <p>Claim Date: {selectedBountiesClaim.claimDate}</p>
-                    <p>Finish Date: {selectedBountiesClaim.finishDate}</p>
-                    <h3>Bounty Details</h3>
+                    <p>{t('rewardClaim.claimDate')} {selectedBountiesClaim.claimDate}</p>
+                    <p>{t('rewardClaim.finishDate')} {selectedBountiesClaim.finishDate}</p>
+                    <h3>{t('rewardClaim.bountyDetails')}</h3>
                     {selectedBountiesClaim.bountyDTOS?.length ? (
                         selectedBountiesClaim.bountyDTOS.map((bounty) => (
                             <div key={bounty.bountyID}>
-                                <p>Description: {bounty.description}</p>
-                                <p>Reward: {bounty.reward}</p>
-                                <p>Status: {bounty.status}</p>
-                                <p>Difficulty: {bounty.difficulty}</p>
+                                <p>{t('rewardClaim.b_desc')} {bounty.description}</p>
+                                <p>{t('rewardClaim.r_bounty')} {bounty.reward}</p>
+                                <p>{t('rewardClaim.status')}: {bounty.status}</p>
+                                <p>{t('rewardClaim.b_difficulty')} {bounty.difficulty}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No active bounty details available.</p>
+                        <p>{t('rewardClaim.b_no_active')}</p>
                     )}
-                    <h3>Player Details</h3>
+                    <h3>{t('rewardClaim.player_details')}</h3>
                     {selectedBountiesClaim.playerDTOS?.length ? (
                         selectedBountiesClaim.playerDTOS.map((player) => (
                             <div key={player.id}>
-                                <p>Name: {player.name}</p>
-                                <p>Class: {player.clazz}</p>
-                                <p>Specialty: {player.speciality}</p>
-                                <p>Persuasion: {player.persuasionLevel}</p>
+                                <p>{t('rewardClaim.player_name')} {player.name}</p>
+                                <p>{t('rewardClaim.player_class')} {player.clazz}</p>
+                                <p>{t('rewardClaim.player_speciality')} {player.speciality}</p>
+                                <p>{t('rewardClaim.player_persuasion')} {player.persuasionLevel}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No active player details available.</p>
+                        <p>{t('rewardClaim.player_no_active')}</p>
                     )}
-                    <button onClick={() => setSelectedBountiesClaim(null)}>Back to List</button>
+                    <button onClick={() => setSelectedBountiesClaim(null)}>{t('rewardClaim.back')}</button>
                 </div>
             )}
             <div className="page-image">
