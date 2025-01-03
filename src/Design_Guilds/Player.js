@@ -39,8 +39,9 @@ const Player = () => {
     const fetchPlayerDetails = async (playerId) => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) throw new Error('Please log in');
-
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const response = await fetch(`http://localhost:8080/Tavern/players/relations/${playerId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -54,12 +55,16 @@ const Player = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validatePlayerData(formData); // Use your validation function
+        const errors = validatePlayerData(formData);
         if (Object.keys(errors).length > 0) {
-            setValidationErrors(errors); // Update state to display errors in the UI
-            return; // Stop submission if there are validation errors
+            setValidationErrors(errors);
+            return;
         }
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const url = editingPlayer
                 ? `http://localhost:8080/Tavern/players/${editingPlayer.id}`
                 : 'http://localhost:8080/Tavern/players';
@@ -80,10 +85,10 @@ const Player = () => {
                 speciality: '',
                 persuasionLevel: ''
             });
-            setValidationErrors({}); // Clear validation errors
+            setValidationErrors({});
             fetchPlayers(currentPage);
         } catch (err) {
-            setError(editingPlayer ? 'F update player' : 'F  create player');
+            setError(err.message);
         }
     };
 
@@ -100,6 +105,10 @@ const Player = () => {
 
     const handleDelete = async (playerId) => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             await fetch(`http://localhost:8080/Tavern/players/${playerId}`, {
                 method: 'DELETE',
                 headers: {
@@ -108,7 +117,7 @@ const Player = () => {
             });
             fetchPlayers(0);
         } catch (err) {
-            setError('Failed to delete player');
+            setError(err.message);
         }
     };
 
@@ -126,7 +135,7 @@ const Player = () => {
                     persuasionLevel: ''
                 });
             }}>{showForm ? 'Cancel' : 'Create Player'}</button>
-            {error && <p>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
 
             {showForm && (
                 <form onSubmit={handleSubmit}>

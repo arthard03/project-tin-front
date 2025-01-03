@@ -40,7 +40,9 @@ function RewardClaim() {
     const fetchBountiesClaimDetails = async (claimID) => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) throw new Error('Please log in to view details.');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/relations/${claimID}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -61,6 +63,10 @@ function RewardClaim() {
             return;
         }
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const url = editingBountyClaim
                 ? `http://localhost:8080/Tavern/bountiesClaim/${editingBountyClaim.claimID}`
                 : 'http://localhost:8080/Tavern/bountiesClaim';
@@ -87,7 +93,7 @@ function RewardClaim() {
             setValidationErrors({});
             fetchBountiesClaims(currentPage);
         } catch (err) {
-            setError(editingBountyClaim ? 'Failed to update bounty claim.' : 'Failed to create bounty claim.');
+            setError(err.message);
         }
     };
 
@@ -104,6 +110,10 @@ function RewardClaim() {
 
     const handleDelete = async (bountyClaimId) => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/${bountyClaimId}`, {
                 method: 'DELETE',
                 headers: {
@@ -113,7 +123,7 @@ function RewardClaim() {
             if (!response.ok) throw new Error('Failed to delete bounty claim.');
             fetchBountiesClaims(0);
         } catch (err) {
-            setError('Failed to delete bounty claim.');
+            setError(err.message);
         }
     };
 

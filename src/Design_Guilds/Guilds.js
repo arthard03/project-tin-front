@@ -15,10 +15,10 @@ function Guilds() {
         members: ''
     });
     const pageSize = 2;
-    
+
     useEffect(() => {
         fetchGuilds(0);
-    }, []);
+    },[]);
 
     const fetchGuilds = async (page = 0) => {
         try {
@@ -38,8 +38,9 @@ function Guilds() {
     const fetchGuildDetails = async (guildId) => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) throw new Error('Please log in');
-
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const response = await fetch(`http://localhost:8080/Tavern/guilds/relations/${guildId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -58,6 +59,10 @@ function Guilds() {
             return;
         }
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const url = editingGuild
                 ? `http://localhost:8080/Tavern/guilds/${editingGuild.guildID}`
                 : 'http://localhost:8080/Tavern/guilds';
@@ -80,7 +85,7 @@ function Guilds() {
             setValidationErrors({});
             fetchGuilds(currentPage);
         } catch (err) {
-            setError(editingGuild ? 'F  update guild' : 'F create guild');
+            setError(err.message);
         }
     };
     const startEdit = (guild) => {
@@ -94,6 +99,10 @@ function Guilds() {
     };
     const handleDelete = async (guildId) => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             await fetch(`http://localhost:8080/Tavern/guilds/${guildId}`, {
                 method: 'DELETE',
                 headers: {
@@ -102,7 +111,7 @@ function Guilds() {
             });
             fetchGuilds(0);
         } catch (err) {
-            setError('Failed to delete guild');
+            setError(err.message);
         }
     };
     return (
@@ -118,7 +127,7 @@ function Guilds() {
                     members: ''
                 });
             }}>{showForm ? 'Cancel' : 'Create Guild'}</button>
-            {error && <p>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <div>

@@ -39,8 +39,9 @@ function Rewards() {
     const fetchBountiesDetails = async (bountyID) => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) throw new Error('Please log in to view guild details.');
-
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const response = await fetch(`http://localhost:8080/Tavern/bounties/relations/${bountyID}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -59,6 +60,10 @@ function Rewards() {
             return;
         }
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             const url = editingBounty
                 ? `http://localhost:8080/Tavern/bounties/${editingBounty.bountyID}`
                 : 'http://localhost:8080/Tavern/bounties';
@@ -83,7 +88,7 @@ function Rewards() {
             setValidationErrors({});
             fetchBounties(currentPage);
         } catch (err) {
-            setError(editingBounty ? 'Failed to update bounty' : 'Failed to create bounty');
+            setError(err.message);
         }
     };
 
@@ -100,6 +105,10 @@ function Rewards() {
     };
     const handleDelete = async (bountyId) => {
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('You do not have permission to do this.');
+            }
             await fetch(`http://localhost:8080/Tavern/bounties/${bountyId}`, {
                 method: 'DELETE',
                 headers: {
@@ -108,7 +117,7 @@ function Rewards() {
             });
             fetchBounties(0);
         } catch (err) {
-            setError('Failed to delete bounty');
+            setError(err.message);
         }
     };
     return (
@@ -126,7 +135,7 @@ function Rewards() {
                     guild: ''
                 });
             }}>{showForm ? 'Cancel' : 'Create Bounty'}</button>
-            {error && <p>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <div>
