@@ -8,7 +8,7 @@ import AuthenticationPage from './Design_Guilds/register';
 import './App.css';
 
 function App() {
-    const isAuthenticated = !!  localStorage.getItem('token');
+    const isAuthenticated = !!localStorage.getItem('token');
 
     const handleLogout = () => {
         localStorage.removeItem('token');

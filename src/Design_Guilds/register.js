@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import {validateAuthForm} from '../Validation/UserValidation';
 function AuthenticationPage() {
     const [isRegistering, setIsRegistering] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showRoleSelect, setShowRoleSelect] = useState(false);
     const [selectedRole, setSelectedRole] = useState('USER');
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -20,20 +21,33 @@ function AuthenticationPage() {
     }, []);
 
     const handleRegister = async () => {
+        const validationErrors = validateAuthForm(username, password);
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        setErrors({});
         try {
             await axios.post('http://localhost:8080/Tavern/auth/register', {
                 name: username,
                 password: password,
                 role: selectedRole
             });
-            alert('Registration successful!');
+            // alert('Registration successful!');
             setIsRegistering(false);
         } catch (error) {
-            alert('Error registering: ' + error.response?.data || 'Unknown error');
+            // alert('Error registering: ' + error.response?.data || 'Unknown error');
+            setErrors(error.message);
         }
     };
 
     const handleLogin = async () => {
+        const validationErrors = validateAuthForm(username, password);
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        setErrors({});
         try {
             const response = await axios.post('http://localhost:8080/Tavern/auth/login', {
                 name: username,
@@ -43,26 +57,33 @@ function AuthenticationPage() {
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
             window.location.href = '/guilds';
         } catch (error) {
-            alert('Error logging in: ' + error.response?.data || 'Unknown error');
+           setErrors(error.message);
         }
     };
 
     return (
         <div>
             <h1>{isRegistering ? 'Register' : 'Login'}</h1>
+            <form>
+            <div>
             <input
                 type="text"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
             />
+                {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+            </div>
+            <div>
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-
+                {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+            </div>
+            </form>
             {isRegistering && showRoleSelect && (
                 <select
                     value={selectedRole}
