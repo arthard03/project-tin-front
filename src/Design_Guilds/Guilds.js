@@ -168,7 +168,7 @@ function Guilds() {
                     <div>
                         {guilds.map(guild => (
                             <div key={guild.guildID}>
-                                <p><strong>{t('guilds.form.name.placeholder')}{guild.name}</strong></p>
+                                <p><strong>{t('guilds.form.name.placeholder')} {guild.name}</strong></p>
                                 <p>{t('guilds.form.description.placeholder')} {guild.description}</p>
                                 <p>{t('guilds.form.members.placeholder')} {guild.members}</p>
                                 <button onClick={() => fetchGuildDetails(guild.guildID)}>{t('guilds.actions.details')}</button>

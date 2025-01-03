@@ -1,6 +1,9 @@
 {
   "error": {
-    "error": "You do not have permission to do this."
+    "error": "You do not have permission to do this.",
+    "guild_details": "Failed to fetch details",
+    "guild_delete": "Failed to delete",
+    "guild_": "Failed to create||update"
   },
   "nav": {
     "loginRegister": "Login/Register",
