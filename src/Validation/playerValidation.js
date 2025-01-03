@@ -1,28 +1,28 @@
-export const validatePlayerData = (formData) => {
+export const validatePlayerData = (formData,t) => {
     const errors = {};
 
     if (!formData.name) {
-        errors.name = "Name is required";
+        errors.name = t('playerPage.name_required');
     } else if (formData.name.length < 5 || formData.name.length > 30) {
-        errors.name = "Name must be between 5 and 30 characters";
+        errors.name = t('playerPage.name_invalid');
     }
 
     if (!formData.clazz) {
-        errors.clazz = "Class is required";
+        errors.clazz = t('playerPage.clazz_required');
     } else if (formData.clazz.length < 5 || formData.clazz.length > 30) {
-        errors.clazz = "Class must be between 5 and 30 characters";
+        errors.clazz = t('playerPage.name_invalid');
     }
 
     if (!formData.speciality) {
-        errors.speciality = "Speciality is required";
+        errors.speciality = t('playerPage.speciality_required');
     } else if (formData.speciality.length < 5 || formData.speciality.length > 30) {
-        errors.speciality = "Speciality must be between 5 and 30 characters";
+        errors.speciality = t('playerPage.speciality_invalid');
     }
 
     if (formData.persuasionLevel === null || formData.persuasionLevel === undefined) {
-        errors.persuasionLevel = "Persuasion Level is required";
+        errors.persuasionLevel = t('playerPage.persuasionLevel_required');
     } else if (!Number.isInteger(formData.persuasionLevel) || formData.persuasionLevel < 0 || formData.persuasionLevel > 9999999999) {
-        errors.persuasionLevel = "Persuasion Level must be a positive integer with up to 10 digits";
+        errors.persuasionLevel = t('playerPage.persuasionLevel_invalid');
     }
 
     return errors;

@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {validateRewardData} from '../Validation/rewardValidation';
+import { useTranslation } from 'react-i18next';
+
 function Rewards() {
+    const { t } = useTranslation();
     const [bounties, setBounties] = useState([]);
     const [selectedBounty, setSelectedBounty] = useState(null);
     const [error, setError] = useState('');
@@ -40,7 +43,7 @@ function Rewards() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const response = await fetch(`http://localhost:8080/Tavern/bounties/relations/${bountyID}`, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +57,7 @@ function Rewards() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validateRewardData(formData); 
+        const errors = validateRewardData(formData,t);
         if (Object.keys(errors).length > 0) {
             setValidationErrors(errors); 
             return;
@@ -62,7 +65,7 @@ function Rewards() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const url = editingBounty
                 ? `http://localhost:8080/Tavern/bounties/${editingBounty.bountyID}`
@@ -107,7 +110,7 @@ function Rewards() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             await fetch(`http://localhost:8080/Tavern/bounties/${bountyId}`, {
                 method: 'DELETE',
@@ -122,8 +125,8 @@ function Rewards() {
     };
     return (
         <div>
-            <h1>Bounties Directory</h1>
-            <button onClick={() => fetchBounties(0)}>Load...</button>
+            <h1>{t('reward.reward_directory')}</h1>
+            <button onClick={() => fetchBounties(0)}>{t('reward.load')}</button>
             <button onClick={() => {
                 setShowForm(!showForm);
                 setEditingBounty(null);
@@ -134,14 +137,14 @@ function Rewards() {
                     difficulty: '',
                     guild: ''
                 });
-            }}>{showForm ? 'Cancel' : 'Create Bounty'}</button>
+            }}>{showForm ? t('reward.cancel') : t('reward.create')}</button>
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input
                             type="text"
-                            placeholder="Description"
+                            placeholder={t('reward.description')}
                             value={formData.description}
                             onChange={(e) => setFormData({...formData, description: e.target.value})}
                         />
@@ -150,7 +153,7 @@ function Rewards() {
                     <div>
                         <input
                             type="number"
-                            placeholder="Reward"
+                            placeholder={t('reward.reward')}
                             value={formData.reward}
                             onChange={(e) => setFormData({...formData, reward: e.target.value})}
                         />
@@ -159,7 +162,7 @@ function Rewards() {
                     <div>
                         <input
                             type="number"
-                            placeholder="Status"
+                            placeholder={t('reward.status')}
                             value={formData.status}
                             onChange={(e) => setFormData({...formData, status: e.target.value})}
                         />
@@ -168,7 +171,7 @@ function Rewards() {
                     <div>
                         <input
                             type="text"
-                            placeholder="Difficulty"
+                            placeholder={t('reward.difficulty')}
                             value={formData.difficulty}
                             onChange={(e) => setFormData({...formData, difficulty: e.target.value})}
                         />
@@ -177,13 +180,13 @@ function Rewards() {
                     <div>
                         <input
                             type="number"
-                            placeholder="Guild ID"
+                            placeholder={t('reward.guild')}
                             value={formData.guildID}
                             onChange={(e) => setFormData({...formData, guildID: e.target.value})}
                         />
                         {validationErrors.guildID && <p style={{color: 'red'}}>{validationErrors.guildID}</p>}
                     </div>
-                    <button type="submit">{editingBounty ? 'Update' : 'Submit'}</button>
+                    <button type="submit">{editingBounty ? t('reward.update') : t('reward.submit')}</button>
                 </form>
             )}
             {!selectedBounty && (
@@ -191,59 +194,59 @@ function Rewards() {
                     <div>
                         {bounties.map((bounty) => (
                             <div key={bounty.bountyID}>
-                                <p>Description: {bounty.description}</p>
-                                <p>Reward: {bounty.reward}</p>
-                                <p>Status: {bounty.status}</p>
-                                <p>Difficulty: {bounty.difficulty}</p>
-                                <button onClick={() => fetchBountiesDetails(bounty.bountyID)}>Details</button>
+                                <p>{t('reward.description')} {bounty.description}</p>
+                                <p>{t('reward.reward')} {bounty.reward}</p>
+                                <p>{t('reward.status')} {bounty.status}</p>
+                                <p>{t('reward.difficulty')}: {bounty.difficulty}</p>
+                                <button onClick={() => fetchBountiesDetails(bounty.bountyID)}>{t('reward.details')}</button>
                                 <button onClick={() => {
                                     startEdit(bounty);
                                     setShowForm(!showForm);
-                                }}>Edit
+                                }}>{t('reward.edit')}
                                 </button>
-                                <button onClick={() => handleDelete(bounty.bountyID)}>Delete</button>
+                                <button onClick={() => handleDelete(bounty.bountyID)}>{t('reward.delete')}</button>
                             </div>
                         ))}
                     </div>
                     <div>
-                        <button onClick={() => fetchBounties(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
-                        <span>Page {currentPage + 1} of {totalPages}</span>
-                        <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
+                        <button onClick={() => fetchBounties(currentPage - 1)} disabled={currentPage === 0}>{t('reward.previous')}</button>
+                        <span>{t('reward.page')} {currentPage + 1} {t('reward.of')} {totalPages}</span>
+                        <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('reward.next')}</button>
                     </div>
                 </div>
             )}
 
             {selectedBounty && (
                 <div>
-                    <p>Description: {selectedBounty.description}</p>
-                    <p>Reward: {selectedBounty.reward}</p>
-                    <p>Status: {selectedBounty.status}</p>
-                    <p>Difficulty: {selectedBounty.difficulty}</p>
-                    <h3>BountyClaim</h3>
+                    <p>{t('reward.description')} {selectedBounty.description}</p>
+                    <p>{t('reward.reward')} {selectedBounty.reward}</p>
+                    <p>{t('reward.status')} {selectedBounty.status}</p>
+                    <p>{t('reward.difficulty')} {selectedBounty.difficulty}</p>
+                    <h3>{t('reward.bounty_claim')}</h3>
                     {selectedBounty.bountyClaims?.length ? (
                         selectedBounty.bountyClaims.map(claim => (
                             <div key={claim.claimID}>
-                                <p>Claim Date: {claim.claimDate}</p>
-                                <p>Finish Date: {claim.finishDate}</p>
-                                <p>Bounty ID: {claim.bountyID}</p>
-                                <p>Player ID: {claim.playerID}</p>
+                                <p>{t('reward.bounty_claim_date')} {claim.claimDate}</p>
+                                <p>{t('reward.bounty_claim_finish_date')} {claim.finishDate}</p>
+                                <p>{t('reward.bounty_claim_bountyID')} {claim.bountyID}</p>
+                                <p>{t('reward.bounty_claim_playerID')} {claim.playerID}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No active bounty claims</p>
+                        <p>{t('reward.no_active_bounty_claim')}</p>
                     )}
-                    <h3>Guild</h3>
+                    <h3>{t('reward.guild_')}</h3>
                     {selectedBounty.guildDTOS?.length ? (
                         selectedBounty.guildDTOS.map((guild) => (
                             <div key={guild.guildID}>
-                                <p>Name: {guild.name} gold</p>
-                                <p>Description: {guild.description}</p>
-                                <p>Members: {guild.members}</p></div>
+                                <p>{t('reward.guild_name')} {guild.name}</p>
+                                <p>{t('reward.guild_description')} {guild.description}</p>
+                                <p>{t('reward.guild_members')} {guild.members}</p></div>
                         ))
                     ) : (
-                        <p>No active guilds</p>
+                        <p>{t('reward.no_active_guild')}</p>
                     )}
-                    <button onClick={() => setSelectedBounty(null)}>Back to List</button>
+                    <button onClick={() => setSelectedBounty(null)}>{t('reward.back')}</button>
                 </div>
             )}
             <div className="page-image">

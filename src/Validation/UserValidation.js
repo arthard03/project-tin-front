@@ -1,16 +1,16 @@
-export const validateAuthForm = (username, password) => {
+export const validateAuthForm = (username, password,t) => {
     const errors = {};
 
     if (!username.trim()) {
-        errors.username = 'Username is required.';
+        errors.username = t('player.username_required');
     } else if (username.length > 30) {
-        errors.username = 'Username must not exceed 30 characters.';
+        errors.username = t('player.username_invalid');
     }
 
     if (!password.trim()) {
-        errors.password = 'Password is required.';
+        errors.password = t('player.password_required');
     } else if (password.length < 10) {
-        errors.password = 'Password must be at least 10 characters.';
+        errors.password = t('player.password_invalid');
     }
 
     return errors;

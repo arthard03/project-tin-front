@@ -1,0 +1,150 @@
+{
+  "error": {
+    "error": "You do not have permission to do this."
+  },
+  "nav": {
+    "loginRegister": "Login/Register",
+    "guilds": "Guilds",
+    "rewards": "Rewards",
+    "rewardClaim": "Reward Claim",
+    "player": "Player",
+    "logout": "Logout"
+  },
+  "guilds": {
+    "directory": "Guilds Directory",
+    "loadGuilds": "Load Guilds",
+    "createGuild": "Create Guild",
+    "cancel": "Cancel",
+    "form": {
+      "name": {
+        "placeholder": "Name",
+        "required": "Name is required",
+        "length": "Name must be between 10 and 30 characters"
+      },
+      "description": {
+        "placeholder": "Description",
+        "required": "Description is required",
+        "length": "Description must be between 10 and 150 characters"
+      },
+      "members": {
+        "placeholder": "Members",
+        "required": "Members Level is required",
+        "invalid": "Members must be a positive integer with up to 10 digits"
+      }
+    },
+    "actions": {
+      "submit": "Submit",
+      "update": "Update",
+      "details": "Details",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back to List"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page"
+    },
+    "guildDetails": {
+      "title": "Guild: ",
+      "description": "Description: ",
+      "members": "Members: ",
+      "bounties": {
+        "title": "Bounties",
+        "noBounties": "No active bounties",
+        "reward": "Reward:  ",
+        "description": "Description: ",
+        "difficulty": "Difficulty: ",
+        "status": "Status: "
+      }
+    }
+  },
+  "player": {
+    "login": "Login",
+    "register": "Register",
+    "password": "Password",
+    "username": "Username",
+    "username_required": "Username is required.",
+    "username_invalid": "Username must not exceed 30 characters.",
+    "password_required": "Password is required.",
+    "password_invalid": "Password must be at least 10 characters.",
+    "have_acc": "Already have an account? Login",
+    "dont_have_acc": "Don't have an account? Register"
+  },
+"playerPage": {
+  "playerDirectory": "Players Directory",
+  "load": "Load Players",
+  "create": "Create Player",
+  "update": "Update",
+  "edit": "Edit",
+  "submit": "Submit",
+  "delete": "Delete",
+  "details": "Details",
+  "previous": "Previous",
+  "page": "Page",
+  "of": "of",
+  "next": "Next",
+  "bounty_claim": "Bounty Claims",
+  "bounty_claim_date": "Claim Date: ",
+  "bounty_claim_finish_date": "Finish Date: ",
+  "bounty_claim_bountyID": "Bounty ID:  ",
+  "bounty_claim_playerID": "Player ID: ",
+"no_active_bounty": "No active bounty claims",
+  "back_to_list": "Back to List",
+  "cancel": "Cancel",
+  "name": "Name",
+  "clazz": "Class",
+  "speciality": "Speciality",
+  "persuasionLevel": "Persuasion Level",
+  "name_required": "Name is required",
+  "clazz_required": "Class is required",
+  "speciality_required": "Speciality",
+  "persuasionLevel_required": "Persuasion Level is required",
+  "name_invalid": "Name must be between 5 and 30 characters",
+  "clazz_invalid": "Class must be between 5 and 30 characters",
+  "speciality_invalid": "Speciality must be between 5 and 30 characters",
+  "persuasionLevel_invalid": "Persuasion Level must be a positive integer with up to 10 digits"
+},
+  "reward": {
+    "description": "Description",
+    "reward": "Reward",
+    "status": "Status",
+    "difficulty": "Difficulty",
+    "guild": "Guild ID",
+    "reward_directory": "Bounties Directory",
+    "load": "Load...",
+    "cancel": "Cancel",
+    "create": "Create Bounty",
+    "update": "Update",
+    "submit": "Submit",
+    "details": "Details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "previous": "Previous",
+    "page": "Page",
+    "of": "of",
+    "next": "Next",
+    "bounty_claim": "BountyClaim",
+    "bounty_claim_date": "Claim Date: ",
+    "bounty_claim_finish_date": "Finish Date: ",
+    "bounty_claim_bountyID": "Bounty ID:  ",
+    "bounty_claim_playerID": "Player ID: ",
+    "no_active_bounty_claim": "No active bounty claims",
+    "guild_": "Guild",
+    "guild_name": "Name: ",
+    "guild_description": "Description: ",
+    "guild_members": "Members: ",
+    "no_active_guild": "No active guilds",
+    "back": "Back to List",
+    "description_required": "Description is required",
+    "reward_required": "Reward is required",
+    "status_required": "Status is required",
+    "difficulty_required": "Difficulty is required",
+    "guild_required": "Guild ID is required",
+    "description_invalid": "Description must be between 10 and 150 characters",
+    "reward_invalid": "Reward must be a positive integer with up to 10 digits",
+    "status_invalid": "Status must be a single digit between 0 and 1",
+    "difficulty_invalid": "Difficulty must be between 4 and 20 characters",
+    "guild_invalid": "Guild ID must be a valid integer"
+  }
+}

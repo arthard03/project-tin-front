@@ -1,34 +1,34 @@
-export const validateRewardData = (formData) => {
+export const validateRewardData = (formData,t) => {
     const errors = {};
 
     if (!formData.description) {
-        errors.description = "Description is required";
+        errors.description = t('reward.description_required');
     } else if (formData.description.length < 10 || formData.description.length > 150) {
-        errors.description = "Description must be between 10 and 150 characters";
+        errors.description = t('reward.description_invalid');
     }
 
     if (!formData.reward) {
-        errors.reward = "Reward is required";
+        errors.reward = t('reward.reward_required');
     } else if (!Number.isInteger(Number(formData.reward)) || formData.reward < 0 || formData.reward > 9999999999) {
-        errors.reward = "Reward must be a positive integer with up to 10 digits";
+        errors.reward = t('reward.reward_invalid');
     }
 
     if (!formData.status) {
-        errors.status = "Status is required";
+        errors.status = t('reward.status_required');
     } else if (!Number.isInteger(Number(formData.status)) || formData.status < 0 || formData.status > 1) {
-        errors.status = "Status must be a single digit between 0 and 9";
+        errors.status = t('reward.status_invalid');
     }
 
     if (!formData.difficulty) {
-        errors.difficulty = "Difficulty is required";
+        errors.difficulty = t('reward.difficulty_required');
     } else if (formData.difficulty.length < 4 || formData.difficulty.length > 20) {
-        errors.difficulty = "Difficulty must be between 4 and 20 characters";
+        errors.difficulty = t('reward.difficulty_invalid');
     }
 
     if (!formData.guildID) {
-        errors.guildID = "Guild ID is required";
+        errors.guildID = t('reward.guild_required');
     } else if (!Number.isInteger(Number(formData.guildID)) || formData.guildID<=0) {
-        errors.guildID = "Guild ID must be a valid integer";
+        errors.guildID = t('reward.guild_invalid');
     }
 
     return errors;

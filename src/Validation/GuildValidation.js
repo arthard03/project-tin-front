@@ -1,27 +1,23 @@
-export const validateGuildData = (formData)=>{
-    const errros ={};
-    if(!formData.name){
-        errros.name="Name is required";
-    }else if(formData.name.length<10 || formData.name.length>30){
-        errros.name="Name must be between 10 and 30 characters"
+export const validateGuildData = (formData, t) => {
+    const errors = {};
 
+    if (!formData.name) {
+        errors.name = t('guilds.form.name.required');
+    } else if (formData.name.length < 10 || formData.name.length > 30) {
+        errors.name = t('guilds.form.name.length');
     }
 
-    if(!formData.description){
-        errros.description="Description is required";
-    }else if(formData.description.length<10 || formData.description.length>150){
-        errros.description="Description must be between 10 and 150 characters";
+    if (!formData.description) {
+        errors.description = t('guilds.form.description.required');
+    } else if (formData.description.length < 10 || formData.description.length > 150) {
+        errors.description = t('guilds.form.description.length');
     }
+
     if (formData.members === null || formData.members === undefined) {
-        errros.members = "Members Level is required";
+        errors.members = t('guilds.form.members.required');
     } else if (!Number.isInteger(formData.members) || formData.members < 0 || formData.members > 9999999999) {
-        errros.members = "Members  must be a positive integer with up to 10 digits";
+        errors.members = t('guilds.form.members.invalid');
     }
 
-
-    return errros;
-}
-
-// name: '',
-//     description: '',
-//     members: ''
+    return errors;
+};

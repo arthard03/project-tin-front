@@ -1,0 +1,151 @@
+{
+  "error": {
+    "error": "Nie masz na to pozwolenia."
+  },
+  "nav": {
+    "loginRegister": "Logowanie/Rejestracja",
+    "guilds": "Gildie",
+    "rewards": "Nagrody",
+    "rewardClaim": "Odbierz Nagrodę",
+    "player": "Gracz",
+    "logout": "Wyloguj"
+  },
+  "guilds": {
+    "directory": "Katalog Gildii",
+    "loadGuilds": "Załaduj Gildie",
+    "createGuild": "Utwórz Gildię",
+    "cancel": "Anuluj",
+    "form": {
+      "name": {
+        "placeholder": "Nazwa",
+        "required": "Nazwa jest wymagana",
+        "length": "Nazwa musi mieć od 10 do 30 znaków"
+      },
+      "description": {
+        "placeholder": "Opis",
+        "required": "Opis jest wymagany",
+        "length": "Opis musi mieć od 10 do 150 znaków"
+      },
+      "members": {
+        "placeholder": "Członkowie",
+        "required": "Liczba członków jest wymagana",
+        "invalid": "Liczba członków musi być dodatnią liczbą całkowitą do 10 cyfr"
+      }
+    },
+    "actions": {
+      "submit": "Wyślij",
+      "update": "Aktualizuj",
+      "details": "Szczegóły",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "back": "Powrót do listy"
+    },
+    "pagination": {
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "page": "Strona",
+      "of": "z"
+    },
+    "guildDetails": {
+      "title": "Gildia: ",
+      "description": "Opis: ",
+      "members": "Członkowie: ",
+      "bounties": {
+        "title": "Zlecenia",
+        "noBounties": "Brak aktywnych zleceń",
+        "reward": "Nagroda:  ",
+        "description": "Opis: ",
+        "difficulty": "Trudność: ",
+        "status": "Stan: "
+      }
+    }
+  },
+  "player": {
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "password": "Hasło",
+    "username": "Nazwa użytkownika",
+    "username_required": "Nazwa użytkownika jest wymagana.",
+    "username_invalid": "Nazwa użytkownika nie może przekraczać 30 znaków.",
+    "password_required": "Hasło jest wymagane.",
+    "password_invalid": "Hasło musi mieć co najmniej 10 znaków.",
+    "have_acc": "Masz już konto? Zaloguj się",
+    "dont_have_acc": "Nie masz konta? Zarejestruj się"
+  },
+  "playerPage": {
+    "playerDirectory": "Katalog Graczy",
+    "load": "Wczytaj Graczy",
+    "create": "Utwórz Gracza",
+    "update": "Aktualizuj",
+    "edit": "Edytuj",
+    "submit": "Wyślij",
+    "delete": "Usuń",
+    "details": "Szczegóły",
+    "previous": "Poprzednia",
+    "page": "Strona",
+    "of": "z",
+    "next": "Następna",
+    "bounty_claim": "Roszczenia Nagrody",
+    "bounty_claim_date": "Data Roszczenia: ",
+    "bounty_claim_finish_date": "Data Zakończenia: ",
+    "bounty_claim_bountyID": "ID Nagrody: ",
+    "bounty_claim_playerID": "ID Gracza: ",
+    "no_active_bounty": "Brak aktywnych roszczeń nagrody",
+    "back_to_list": "Powrót do listy",
+    "cancel": "Anuluj",
+    "name": "Imię",
+    "clazz": "Klasa",
+    "speciality": "Specjalizacja",
+    "persuasionLevel": "Poziom Perswazji",
+    "name_required": "Imię jest wymagane",
+    "clazz_required": "Klasa jest wymagana",
+    "speciality_required": "Specjalizacja jest wymagana",
+    "persuasionLevel_required": "Poziom Perswazji jest wymagany",
+    "name_invalid": "Imię musi mieć od 5 do 30 znaków",
+    "clazz_invalid": "Klasa musi mieć od 5 do 30 znaków",
+    "speciality_invalid": "Specjalizacja musi mieć od 5 do 30 znaków",
+    "persuasionLevel_invalid": "Poziom Perswazji musi być liczbą całkowitą dodatnią o maksymalnie 10 cyfrach"
+  },
+  "reward": {
+    "description": "Opis",
+    "reward": "Nagroda",
+    "status": "Status",
+    "difficulty": "Trudność",
+    "guild": "ID Gildii",
+    "reward_directory": "Katalog Nagród",
+    "load": "Wczytywanie...",
+    "cancel": "Anuluj",
+    "create": "Utwórz Nagrodę",
+    "update": "Aktualizuj",
+    "submit": "Wyślij",
+    "details": "Szczegóły",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "previous": "Poprzednia",
+    "page": "Strona",
+    "of": "z",
+    "next": "Następna",
+    "bounty_claim": "Roszczenie Nagrody",
+    "bounty_claim_date": "Data Roszczenia: ",
+    "bounty_claim_finish_date": "Data Zakończenia: ",
+    "bounty_claim_bountyID": "ID Nagrody: ",
+    "bounty_claim_playerID": "ID Gracza: ",
+    "no_active_bounty_claim": "Brak aktywnych roszczeń nagrody",
+    "guild_": "Gildia",
+    "guild_name": "Nazwa: ",
+    "guild_description": "Opis: ",
+    "guild_members": "Członkowie: ",
+    "no_active_guild": "Brak aktywnych gildii",
+    "back": "Powrót do listy",
+    "description_required": "Opis jest wymagany",
+    "reward_required": "Nagroda jest wymagana",
+    "status_required": "Status jest wymagany",
+    "difficulty_required": "Trudność jest wymagana",
+    "guild_required": "ID Gildii jest wymagane",
+    "description_invalid": "Opis musi mieć od 10 do 150 znaków",
+    "reward_invalid": "Nagroda musi być liczbą całkowitą dodatnią o maksymalnie 10 cyfrach",
+    "status_invalid": "Status musi być pojedynczą cyfrą od 0 do 1",
+    "difficulty_invalid": "Trudność musi mieć od 4 do 20 znaków",
+    "guild_invalid": "ID Gildii musi być prawidłową liczbą całkowitą"
+  }
+}

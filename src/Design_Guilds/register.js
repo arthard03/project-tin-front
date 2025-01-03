@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {validateAuthForm} from '../Validation/UserValidation';
+import { useTranslation } from 'react-i18next';
+
 function AuthenticationPage() {
+    const { t } = useTranslation();
     const [isRegistering, setIsRegistering] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -21,7 +24,7 @@ function AuthenticationPage() {
     }, []);
 
     const handleRegister = async () => {
-        const validationErrors = validateAuthForm(username, password);
+        const validationErrors = validateAuthForm(username, password,t);
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
@@ -63,12 +66,12 @@ function AuthenticationPage() {
 
     return (
         <div>
-            <h1>{isRegistering ? 'Register' : 'Login'}</h1>
+            <h1>{isRegistering ? t('player.register') : t('player.login')}</h1>
             <form>
             <div>
             <input
                 type="text"
-                placeholder="Username"
+                placeholder={t('player.username')}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
             />
@@ -77,7 +80,7 @@ function AuthenticationPage() {
             <div>
             <input
                 type="password"
-                placeholder="Password"
+                placeholder={t('player.password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
@@ -96,13 +99,13 @@ function AuthenticationPage() {
             )}
 
             {isRegistering ? (
-                <button onClick={handleRegister}>Register</button>
+                <button onClick={handleRegister}>{t('player.register')}</button>
             ) : (
-                <button onClick={handleLogin}>Login</button>
+                <button onClick={handleLogin}>{t('player.login')}</button>
             )}
 
             <button onClick={() => setIsRegistering(!isRegistering)}>
-                {isRegistering ? 'Already have an account? Login' : 'Don\'t have an account? Register'}
+                {isRegistering ? t('player.have_acc') : t('player.dont_have_acc')}
             </button>
             <div className="page-image">
                 <img src="https://static1.thegamerimages.com/wordpress/wp-content/uploads/2020/12/oblivion-guard-the-elder-scrolls.jpg"

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {validateRewardClaimData} from '../Validation/RewardClaimValidation'
+import { useTranslation } from 'react-i18next';
+
 function RewardClaim() {
+    const { t } = useTranslation();
     const [bountiesClaim, setBountiesClaim] = useState([]);
     const [selectedBountiesClaim, setSelectedBountiesClaim] = useState(null);
     const [error, setError] = useState('');
@@ -41,7 +44,7 @@ function RewardClaim() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/relations/${claimID}`, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -65,7 +68,7 @@ function RewardClaim() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const url = editingBountyClaim
                 ? `http://localhost:8080/Tavern/bountiesClaim/${editingBountyClaim.claimID}`
@@ -112,7 +115,7 @@ function RewardClaim() {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/${bountyClaimId}`, {
                 method: 'DELETE',

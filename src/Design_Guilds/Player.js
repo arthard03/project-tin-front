@@ -1,7 +1,9 @@
 import React, {useEffect, useState } from 'react';
 import { validatePlayerData } from '../Validation/playerValidation'; // Import the validation module
+import { useTranslation } from 'react-i18next';
 
 const Player = () => {
+    const { t } = useTranslation();
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [error, setError] = useState('');
@@ -40,7 +42,7 @@ const Player = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const response = await fetch(`http://localhost:8080/Tavern/players/relations/${playerId}`, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -55,7 +57,7 @@ const Player = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validatePlayerData(formData);
+        const errors = validatePlayerData(formData,t);
         if (Object.keys(errors).length > 0) {
             setValidationErrors(errors);
             return;
@@ -63,7 +65,7 @@ const Player = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             const url = editingPlayer
                 ? `http://localhost:8080/Tavern/players/${editingPlayer.id}`
@@ -107,7 +109,7 @@ const Player = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('You do not have permission to do this.');
+                throw new Error(t('error.error'));
             }
             await fetch(`http://localhost:8080/Tavern/players/${playerId}`, {
                 method: 'DELETE',
@@ -123,8 +125,8 @@ const Player = () => {
 
     return (
         <div>
-            <h1>Players Directory</h1>
-            <button onClick={() => fetchPlayers(0)}>Load Players</button>
+            <h1>{t('playerPage.playerDirectory')}</h1>
+            <button onClick={() => fetchPlayers(0)}>{t('playerPage.load')}</button>
             <button onClick={() => {
                 setShowForm(!showForm);
                 setEditingPlayer(null);
@@ -134,7 +136,7 @@ const Player = () => {
                     speciality: '',
                     persuasionLevel: ''
                 });
-            }}>{showForm ? 'Cancel' : 'Create Player'}</button>
+            }}>{showForm ? t('playerPage.cancel') : t('playerPage.create')}</button>
             {error && <p style={{color: 'red'}}>{error}</p>}
 
             {showForm && (
@@ -142,7 +144,7 @@ const Player = () => {
                     <div>
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder={t('playerPage.name')}
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
                         />
@@ -151,7 +153,7 @@ const Player = () => {
                     <div>
                         <input
                             type="text"
-                            placeholder="Class"
+                            placeholder={t('playerPage.clazz')}
                             value={formData.clazz}
                             onChange={(e) => setFormData({...formData, clazz: e.target.value})}
                         />
@@ -160,7 +162,7 @@ const Player = () => {
                     <div>
                         <input
                             type="text"
-                            placeholder="Speciality"
+                            placeholder={t('playerPage.speciality')}
                             value={formData.speciality}
                             onChange={(e) => setFormData({...formData, speciality: e.target.value})}
                         />
@@ -169,14 +171,14 @@ const Player = () => {
                     <div>
                         <input
                             type="number"
-                            placeholder="Persuasion Level"
+                            placeholder={t('playerPage.persuasionLevel')}
                             value={formData.persuasionLevel}
                             onChange={(e) => setFormData({...formData, persuasionLevel: parseInt(e.target.value, 10)})}
                         />
                         {validationErrors.persuasionLevel &&
                             <p style={{color: 'red'}}>{validationErrors.persuasionLevel}</p>}
                     </div>
-                    <button type="submit">{editingPlayer ? 'Update' : 'Submit'}</button>
+                    <button type="submit">{editingPlayer ? t('playerPage.update') : t('playerPage.submit')}</button>
                 </form>
             )}
 
@@ -186,25 +188,25 @@ const Player = () => {
                         {players.map(player => (
                             <div key={player.id}>
                                 <p><strong>{player.name}</strong></p>
-                                <p>Class: {player.clazz}</p>
-                                <p>Specialty: {player.speciality}</p>
-                                <p>Persuasion: {player.persuasionLevel}</p>
-                                <button onClick={() => fetchPlayerDetails(player.id)}>Details</button>
+                                <p>{t('playerPage.clazz')} {player.clazz}</p>
+                                <p>{t('playerPage.speciality')} {player.speciality}</p>
+                                <p>{t('playerPage.persuasionLevel')} {player.persuasionLevel}</p>
+                                <button onClick={() => fetchPlayerDetails(player.id)}>{t('playerPage.details')}</button>
                                 <button onClick={() => {
                                     startEdit(player);
                                     setShowForm(!showForm);
                                 }}
-                                >Edit
+                                >{t('playerPage.edit')}
                                 </button>
-                                <button onClick={() => handleDelete(player.id)}>Delete</button>
+                                <button onClick={() => handleDelete(player.id)}>{t('playerPage.delete')}</button>
                             </div>
                         ))}
                     </div>
 
                     <div>
-                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>Previous</button>
-                        <span>Page {currentPage + 1} of {totalPages}</span>
-                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>Next</button>
+                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>{t('playerPage.previous')}</button>
+                        <span>{t('playerPage.page')} {currentPage + 1} {t('playerPage.of')} {totalPages}</span>
+                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('playerPage.next')}</button>
                     </div>
                 </div>
             )}
@@ -212,25 +214,25 @@ const Player = () => {
             {selectedPlayer && (
                 <div>
                     <h2>{selectedPlayer.name}</h2>
-                    <p>Class: {selectedPlayer.clazz}</p>
-                    <p>Specialty: {selectedPlayer.speciality}</p>
-                    <p>Persuasion: {selectedPlayer.persuasionLevel}</p>
+                    <p>{t('playerPage.clazz')} {selectedPlayer.clazz}</p>
+                    <p>{t('playerPage.speciality')} {selectedPlayer.speciality}</p>
+                    <p>{t('playerPage.persuasionLevel')} {selectedPlayer.persuasionLevel}</p>
 
-                    <h3>Bounty Claims</h3>
+                    <h3>{t('playerPage.bounty_claim')}</h3>
                     {selectedPlayer.bountyClaims?.length ? (
                         selectedPlayer.bountyClaims.map(claim => (
                             <div key={claim.claimID}>
-                                <p>Claim Date: {claim.claimDate}</p>
-                                <p>Finish Date: {claim.finishDate}</p>
-                                <p>Bounty ID: {claim.bountyID}</p>
-                                <p>Player ID: {claim.playerID}</p>
+                                <p>{t('playerPage.bounty_claim_date')} {claim.claimDate}</p>
+                                <p>{t('playerPage.bounty_claim_finish_date')} {claim.finishDate}</p>
+                                <p>{t('playerPage.bounty_claim_bountyID')} {claim.bountyID}</p>
+                                <p>{t('playerPage.bounty_claim_playerID')} {claim.playerID}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No active bounty claims</p>
+                        <p>{t('playerPage.no_active_bounty')}</p>
                     )}
 
-                    <button onClick={() => setSelectedPlayer(null)}>Back to List</button>
+                    <button onClick={() => setSelectedPlayer(null)}>{t('playerPage.back')}</button>
                 </div>
             )}
             <div className="page-image">
