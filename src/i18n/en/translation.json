@@ -1,9 +1,23 @@
 {
   "error": {
     "error": "You do not have permission to do this.",
+    "toke": "token error",
+    "error_create": "You do not have permission to create nor update.",
+    "error_delete": "You do not have permission to delete.",
+    "error_details": "You do not have permission to see details.",
+    "guild_g": "Failed to fetch guilds",
     "guild_details": "Failed to fetch details",
     "guild_delete": "Failed to delete",
-    "guild_": "Failed to create||update"
+    "guild_": "Failed to create||update",
+    "player_f": "Failed to fetch player",
+    "player_d": "Failed to delete player",
+    "fetch_p": "Failed to fetch player details",
+    "fetch_g": "Failed to fetch guild details",
+    "fetch_gb": "Failed to fetch guild bounties details",
+    "fetch_b": "Failed to fetch bounties claims",
+    "fetch_bd": "Failed to fetch bounties claims",
+    "bounty_f": "Failed to fetch bounties",
+    "bounty_fd": "Failed to fetch bounties"
   },
   "nav": {
     "loginRegister": "Login/Register",
@@ -14,6 +28,7 @@
     "logout": "Logout"
   },
   "guilds": {
+    "gold": "Gold",
     "directory": "Guilds Directory",
     "loadGuilds": "Load Guilds",
     "createGuild": "Create Guild",
@@ -153,9 +168,11 @@
     "reward_invalid": "Reward must be a positive integer with up to 10 digits",
     "status_invalid": "Status must be a single digit between 0 and 1",
     "difficulty_invalid": "Difficulty must be between 4 and 20 characters",
-    "guild_invalid": "Guild ID must be a valid integer"
+    "guild_invalid": "Guild ID must be a valid integer",
+    "n_": "Bounty"
   },
 "rewardClaim": {
+  "n_": "Bounty Claim",
   "directory": "Bounty Claims Directory",
   "load": "Load Bounty Claims",
   "cancel": "Cancel",

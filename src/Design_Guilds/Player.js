@@ -38,7 +38,7 @@ const Player = () => {
             setSelectedPlayer(null);
             setError('');
         } catch (err) {
-            setError('Failed to load players');
+            setError(t('error.player_f'));
         }
     };
 
@@ -55,7 +55,7 @@ const Player = () => {
             setSelectedPlayer(data);
             setError('');
         } catch (err) {
-            setError(t('error.error'));
+            setError(t('error.fetch_p'));
         }
     };
 
@@ -84,7 +84,7 @@ const Player = () => {
                 body: JSON.stringify(formData)
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_'));
             }
             setShowForm(false);
             setEditingPlayer(null);
@@ -125,7 +125,7 @@ const Player = () => {
                 }
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.player_d'));
             }
             fetchPlayers(0);
         } catch (err) {
@@ -220,7 +220,7 @@ const Player = () => {
 
                     <div>
                         <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>{t('playerPage.previous')}</button>
-                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage + 1 >= totalPages || totalPages === 0}>{t('playerPage.next')}</button>
+                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('playerPage.next')}</button>
                     </div>
 
                 </div>
@@ -228,12 +228,12 @@ const Player = () => {
 
             {selectedPlayer && (
                 <div>
-                    <h2>{selectedPlayer.name}</h2>
+                    <h2><strong>{selectedPlayer.name}</strong></h2>
                     <p>{t('playerPage.clazz')} {selectedPlayer.clazz}</p>
                     <p>{t('playerPage.speciality')} {selectedPlayer.speciality}</p>
                     <p>{t('playerPage.persuasionLevel')} {selectedPlayer.persuasionLevel}</p>
 
-                    <h3>{t('playerPage.bounty_claim')}</h3>
+                    <h3><strong>{t('playerPage.bounty_claim')}</strong></h3>
                     {selectedPlayer.bountyClaims?.length ? (
                         selectedPlayer.bountyClaims.map(claim => (
                             <div key={claim.claimID}>

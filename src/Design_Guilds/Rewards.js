@@ -40,7 +40,7 @@ function Rewards() {
             setSelectedBounty(null);
             setError('');
         } catch (err) {
-            setError('Could not load. Please try again later.');
+            setError(t('error.bounty_f'));
         }
     };
     const fetchBountiesDetails = async (bountyID) => {
@@ -56,7 +56,7 @@ function Rewards() {
             setSelectedBounty(data);
             setError('');
         } catch (err) {
-            setError(t('error.error'));
+            setError(t('error.bounty_fd'));
         }
     };
     const handleSubmit = async (e) => {
@@ -84,7 +84,7 @@ function Rewards() {
                 body: JSON.stringify(formData)
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_'));
             }
             setShowForm(false);
             setEditingBounty(null);
@@ -126,7 +126,7 @@ function Rewards() {
                 }
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_delete'));
             }
             fetchBounties(0);
         } catch (err) {
@@ -207,6 +207,7 @@ function Rewards() {
                     <div>
                         {bounties.map((bounty) => (
                             <div key={bounty.bountyID}>
+                                <p><strong>{t('reward.n_')}</strong></p>
                                 <p>{t('reward.description')} {bounty.description}</p>
                                 <p>{t('reward.reward')} {bounty.reward}</p>
                                 <p>{t('reward.status')} {bounty.status}</p>
@@ -233,11 +234,12 @@ function Rewards() {
 
             {selectedBounty && (
                 <div>
+                    <p><strong>{t('reward.n_')}</strong></p>
                     <p>{t('reward.description')} {selectedBounty.description}</p>
                     <p>{t('reward.reward')} {selectedBounty.reward}</p>
                     <p>{t('reward.status')} {selectedBounty.status}</p>
                     <p>{t('reward.difficulty')} {selectedBounty.difficulty}</p>
-                    <h3>{t('reward.bounty_claim')}</h3>
+                    <h3><strong>{t('reward.bounty_claim')}</strong></h3>
                     {selectedBounty.bountyClaims?.length ? (
                         selectedBounty.bountyClaims.map(claim => (
                             <div key={claim.claimID}>
@@ -250,7 +252,7 @@ function Rewards() {
                     ) : (
                         <p>{t('reward.no_active_bounty_claim')}</p>
                     )}
-                    <h3>{t('reward.guild_')}</h3>
+                    <h3><strong>{t('reward.guild_')}</strong></h3>
                     {selectedBounty.guildDTOS?.length ? (
                         selectedBounty.guildDTOS.map((guild) => (
                             <div key={guild.guildID}>

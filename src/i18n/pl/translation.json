@@ -1,6 +1,23 @@
 {
   "error": {
-    "error": "Nie masz na to pozwolenia."
+    "error": "Nie masz uprawnień do wykonania tej czynności.",
+    "toke": "Błąd tokena.",
+    "error_create": "Nie masz uprawnień do tworzenia ani aktualizowania.",
+    "error_delete": "Nie masz uprawnień do usuwania.",
+    "error_details": "Nie masz uprawnień do wyświetlania szczegółów.",
+    "guild_g": "Nie udało się pobrać gildii.",
+    "guild_details": "Nie udało się pobrać szczegółów gildii.",
+    "guild_delete": "Nie udało się usunąć gildii.",
+    "guild_": "Nie udało się utworzyć/zaktualizować.",
+    "player_f": "Nie udało się pobrać gracza.",
+    "player_d": "Nie udało się usunąć gracza.",
+    "fetch_p": "Nie udało się pobrać szczegółów gracza.",
+    "fetch_g": "Nie udało się pobrać szczegółów gildii.",
+    "fetch_gb": "Nie udało się pobrać szczegółów nagród gildii.",
+    "fetch_b": "Nie udało się pobrać zgłoszeń nagród.",
+    "fetch_bd": "Nie udało się pobrać zgłoszeń nagród.",
+    "bounty_f": "Nie udało się pobrać nagród.",
+    "bounty_fd": "Nie udało się pobrać nagród."
   },
   "nav": {
     "loginRegister": "Logowanie/Rejestracja",
@@ -11,6 +28,7 @@
     "logout": "Wyloguj"
   },
   "guilds": {
+    "gold": "Zlota",
     "directory": "Katalog Gildii",
     "loadGuilds": "Załaduj Gildie",
     "createGuild": "Utwórz Gildię",
@@ -151,9 +169,11 @@
     "reward_invalid": "Nagroda musi być liczbą całkowitą dodatnią o maksymalnie 10 cyfrach",
     "status_invalid": "Status musi być pojedynczą cyfrą od 0 do 1",
     "difficulty_invalid": "Trudność musi mieć od 4 do 20 znaków",
-    "guild_invalid": "ID Gildii musi być prawidłową liczbą całkowitą"
+    "guild_invalid": "ID Gildii musi być prawidłową liczbą całkowitą",
+    "n_": "Nagroda"
   },
   "rewardClaim": {
+    "n_": "Zgłoszenie nagrody",
     "directory": "Katalog Roszczeń Nagród",
     "load": "Wczytaj Roszczenia Nagród",
     "cancel": "Anuluj",

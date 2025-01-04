@@ -30,7 +30,7 @@ function Guilds() {
     const fetchGuilds = async (page = 0) => {
         try {
             const response = await fetch(`http://localhost:8080/Tavern/guilds/getAll?page=${page}&size=${pageSize}`);
-            if (!response.ok) throw new Error('Failed to fetch guilds');
+            if (!response.ok) throw new Error(t('error.guild_g'));
             const data = await response.json();
             setGuilds(data.content);
             setTotalPages(data.totalPages);
@@ -38,7 +38,7 @@ function Guilds() {
             setSelectedGuild(null);
             setError('');
         } catch (err) {
-            setError('Could not load guilds');
+            setError(t('error.guild_g'));
         }
     };
 
@@ -55,7 +55,7 @@ function Guilds() {
             setSelectedGuild(data);
             setError('');
         } catch (err) {
-                setError(t('error.error'));
+                setError(t('error.guild_details'));
         }
     };
     const handleSubmit = async (e) => {
@@ -90,12 +90,12 @@ function Guilds() {
                 members: '',
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_'));
             }
             setValidationErrors({});
             fetchGuilds(currentPage);
         } catch (err) {
-            setError(t('error.error'));
+            setError(t('error.guild_'));
         }
     };
     const startEdit = (guild) => {
@@ -120,7 +120,7 @@ function Guilds() {
                 }
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_delete'));
             }
             fetchGuilds(0);
         } catch (err) {
@@ -207,15 +207,15 @@ function Guilds() {
 
             {selectedGuild && (
                 <div>
-                    <h2>{t('guilds.guildDetails.title')} {selectedGuild.name}</h2>
+                    <h2><strong>{t('guilds.guildDetails.title')} {selectedGuild.name}</strong></h2>
                     <p>{t('guilds.guildDetails.description')} {selectedGuild.description}</p>
                     <p>{t('guilds.guildDetails.members')}: {selectedGuild.members}</p>
 
-                    <h3>{t('guilds.guildDetails.bounties.title')}</h3>
+                    <h3><strong>{t('guilds.guildDetails.bounties.title')}</strong></h3>
                     {selectedGuild.bounty?.length ? (
                         selectedGuild.bounty.map((bounty) => (
                             <div key={bounty.bountyID}>
-                                <p>{t('guilds.guildDetails.bounties.reward')} {bounty.reward} gold</p>
+                                <p>{t('guilds.guildDetails.bounties.reward')} {bounty.reward} {t('guilds.gold')}</p>
                                 <p>{t('guilds.guildDetails.bounties.description')} {bounty.description}</p>
                                 <p>{t('guilds.guildDetails.bounties.difficulty')} {bounty.difficulty}</p>
                                 <p>{t('guilds.guildDetails.bounties.status')} {bounty.status}</p></div>

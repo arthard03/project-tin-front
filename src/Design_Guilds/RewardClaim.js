@@ -40,7 +40,7 @@ function RewardClaim() {
             setSelectedBountiesClaim(null);
             setError('');
         } catch (err) {
-            setError('Failed to load bounty claims.');
+            setError(t('error.fetch_b'));
         }
     };
 
@@ -58,7 +58,7 @@ function RewardClaim() {
             setSelectedBountiesClaim(data);
             setError('');
         } catch (err) {
-            setError(t('error.error'));
+            setError(t('error.fetch_bd'));
         }
     };
 
@@ -89,7 +89,7 @@ function RewardClaim() {
             });
 
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_'));
             }
             setShowForm(false);
             setEditingBountyClaim(null);
@@ -130,7 +130,7 @@ function RewardClaim() {
                 },
             });
             if (!response.ok) {
-                throw new Error(t('error.error'));
+                throw new Error(t('error.guild_delete'));
             }            
             fetchBountiesClaims(0);
         } catch (err) {
@@ -202,6 +202,7 @@ function RewardClaim() {
                     <div>
                         {bountiesClaim.map(bountyClaim => (
                             <div key={bountyClaim.claimID}>
+                                <p><strong>{t('rewardClaim.n_')}</strong></p>
                                 <p>{t('rewardClaim.claimDate')} {bountyClaim.claimDate}</p>
                                 <p>{t('rewardClaim.finishDate')} {bountyClaim.finishDate}</p>
                                 {( userRole === 'ADMIN') && (
@@ -227,9 +228,10 @@ function RewardClaim() {
             )}
             {selectedBountiesClaim && (
                 <div>
+                    <p><strong>{t('rewardClaim.n_')}</strong></p>
                     <p>{t('rewardClaim.claimDate')} {selectedBountiesClaim.claimDate}</p>
                     <p>{t('rewardClaim.finishDate')} {selectedBountiesClaim.finishDate}</p>
-                    <h3>{t('rewardClaim.bountyDetails')}</h3>
+                    <h3><strong>{t('rewardClaim.bountyDetails')}</strong></h3>
                     {selectedBountiesClaim.bountyDTOS?.length ? (
                         selectedBountiesClaim.bountyDTOS.map((bounty) => (
                             <div key={bounty.bountyID}>
@@ -242,7 +244,7 @@ function RewardClaim() {
                     ) : (
                         <p>{t('rewardClaim.b_no_active')}</p>
                     )}
-                    <h3>{t('rewardClaim.player_details')}</h3>
+                    <h3><strong>{t('rewardClaim.player_details')}</strong></h3>
                     {selectedBountiesClaim.playerDTOS?.length ? (
                         selectedBountiesClaim.playerDTOS.map((player) => (
                             <div key={player.id}>
