@@ -12,6 +12,7 @@ function RewardClaim() {
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [editingBountyClaim, setEditingBountyClaim] = useState(null);
+    const [userRole, setUserRole] = useState(null);
     const [formData, setFormData] = useState({
         bountyID: '',
         claimDate: '',
@@ -24,7 +25,10 @@ function RewardClaim() {
     useEffect(() => {
         fetchBountiesClaims(0);
     }, []);
-
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        setUserRole(role);
+    }, []);
     const fetchBountiesClaims = async (page = 0) => {
         try {
             const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/getAll?page=${page}&size=${pageSize}`);
@@ -138,7 +142,8 @@ function RewardClaim() {
         <div>
             <h1>{t('rewardClaim.directory')}</h1>
             <button onClick={() => fetchBountiesClaims(0)}>{t('rewardClaim.load')}</button>
-            <button
+            {( userRole === 'ADMIN') && (
+                <button
                 onClick={() => {
                     setShowForm(!showForm);
                     setEditingBountyClaim(null);
@@ -149,6 +154,7 @@ function RewardClaim() {
                         playerID: ''
                     });
                 }}>{showForm ? t('rewardClaim.cancel') : t('rewardClaim.create')}</button>
+            )}
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
@@ -198,6 +204,8 @@ function RewardClaim() {
                             <div key={bountyClaim.claimID}>
                                 <p>{t('rewardClaim.claimDate')} {bountyClaim.claimDate}</p>
                                 <p>{t('rewardClaim.finishDate')} {bountyClaim.finishDate}</p>
+                                {( userRole === 'ADMIN') && (
+                                    <div>
                                 <button onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>{t('rewardClaim.details')}</button>
                                 <button onClick={() => {
                                     startEdit(bountyClaim);
@@ -205,13 +213,14 @@ function RewardClaim() {
                                 }}>{t('rewardClaim.edit')}
                                 </button>
                                 <button onClick={() => handleDelete(bountyClaim.claimID)}>{t('rewardClaim.delete')}</button>
+                                    </div>
+                                    )}
                             </div>
                         ))}
                     </div>
 
                     <div>
                         <button onClick={() => fetchBountiesClaims(currentPage - 1)} disabled={currentPage === 0}>{t('rewardClaim.previous')}</button>
-                        <span>{t('rewardClaim.page')} {currentPage + 1} {t('rewardClaim.of')} {totalPages}</span>
                         <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('rewardClaim.next')}</button>
                     </div>
                 </div>

@@ -12,6 +12,7 @@ const Player = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [editingPlayer, setEditingPlayer] = useState(null);
+    const [userRole, setUserRole] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         clazz: '',
@@ -23,7 +24,10 @@ const Player = () => {
     useEffect(() => {
         fetchPlayers(0);
     }, []);
-
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        setUserRole(role);
+    }, []);
     const fetchPlayers = async (page = 0) => {
         try {
             const response = await fetch(`http://localhost:8080/Tavern/players/getAll?page=${page}&size=${pageSize}`);
@@ -133,6 +137,7 @@ const Player = () => {
         <div>
             <h1>{t('playerPage.playerDirectory')}</h1>
             <button onClick={() => fetchPlayers(0)}>{t('playerPage.load')}</button>
+            {(userRole === 'USER' || userRole === 'ADMIN') && (
             <button onClick={() => {
                 setShowForm(!showForm);
                 setEditingPlayer(null);
@@ -143,6 +148,8 @@ const Player = () => {
                     persuasionLevel: ''
                 });
             }}>{showForm ? t('playerPage.cancel') : t('playerPage.create')}</button>
+            )}
+
             {error && <p style={{color: 'red'}}>{error}</p>}
 
             {showForm && (
@@ -197,23 +204,25 @@ const Player = () => {
                                 <p>{t('playerPage.clazz')} {player.clazz}</p>
                                 <p>{t('playerPage.speciality')} {player.speciality}</p>
                                 <p>{t('playerPage.persuasionLevel')} {player.persuasionLevel}</p>
-                                <button onClick={() => fetchPlayerDetails(player.id)}>{t('playerPage.details')}</button>
-                                <button onClick={() => {
-                                    startEdit(player);
-                                    setShowForm(!showForm);
-                                }}
-                                >{t('playerPage.edit')}
-                                </button>
-                                <button onClick={() => handleDelete(player.id)}>{t('playerPage.delete')}</button>
+                                {(userRole === 'USER' || userRole === 'ADMIN') && (
+                                    <div>
+                                        <button
+                                            onClick={() => fetchPlayerDetails(player.id)}>{t('playerPage.details')}</button><button onClick={() => {
+                                            startEdit(player);
+                                            setShowForm(!showForm);
+                                        }}>{t('playerPage.edit')}</button>
+                                        <button onClick={() => handleDelete(player.id)}>{t('playerPage.delete')}</button>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
 
                     <div>
                         <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>{t('playerPage.previous')}</button>
-                        <span>{t('playerPage.page')} {currentPage + 1} {t('playerPage.of')} {totalPages}</span>
-                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('playerPage.next')}</button>
+                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage + 1 >= totalPages || totalPages === 0}>{t('playerPage.next')}</button>
                     </div>
+
                 </div>
             )}
 

@@ -12,6 +12,7 @@ function Guilds() {
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [editingGuild, setEditingGuild] = useState(null);
+    const [userRole, setUserRole] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -22,7 +23,10 @@ function Guilds() {
     useEffect(() => {
         fetchGuilds(0);
     },[]);
-
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        setUserRole(role);
+    }, []);
     const fetchGuilds = async (page = 0) => {
         try {
             const response = await fetch(`http://localhost:8080/Tavern/guilds/getAll?page=${page}&size=${pageSize}`);
@@ -127,7 +131,9 @@ function Guilds() {
         <div>
             <h1>{t('guilds.directory')}</h1>
             <button onClick={() => fetchGuilds(0)}>{t('guilds.loadGuilds')}</button>
-            <button onClick={() => {
+            {(userRole === 'ADMIN') && (
+
+                <button onClick={() => {
                 setShowForm(!showForm);
                 setEditingGuild(null);
                 setFormData({
@@ -136,6 +142,7 @@ function Guilds() {
                     members: ''
                 });
             }}>{showForm ? t('guilds.cancel') : t('guilds.createGuild')}</button>
+            )}
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
@@ -177,6 +184,8 @@ function Guilds() {
                                 <p><strong>{t('guilds.form.name.placeholder')} {guild.name}</strong></p>
                                 <p>{t('guilds.form.description.placeholder')} {guild.description}</p>
                                 <p>{t('guilds.form.members.placeholder')} {guild.members}</p>
+                                {( userRole === 'ADMIN') && (
+                                    <div>
                                 <button onClick={() => fetchGuildDetails(guild.guildID)}>{t('guilds.actions.details')}</button>
                                 <button onClick={() => {
                                     startEdit(guild);
@@ -184,12 +193,13 @@ function Guilds() {
                                 }}>{t('guilds.actions.edit')}
                                 </button>
                                 <button onClick={() => handleDelete(guild.guildID)}>{t('guilds.actions.delete')}</button>
+                                    </div>
+                                    )}
                             </div>
                         ))}
                     </div>
                     <div>
                         <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>{t('guilds.pagination.previous')}</button>
-                        <span>{t('guilds.pagination.page')} {currentPage + 1} {t('guilds.pagination.of')} {totalPages}</span>
                         <button onClick={() => fetchGuilds(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('guilds.pagination.next')}</button>
                     </div>
                 </div>

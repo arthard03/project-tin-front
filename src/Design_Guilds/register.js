@@ -36,6 +36,7 @@ function AuthenticationPage() {
                 password: password,
                 role: selectedRole,
             });
+            localStorage.setItem('role', selectedRole);
             setIsRegistering(false);
         } catch (error) {
             if (error.response && error.response.data) {

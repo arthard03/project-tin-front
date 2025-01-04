@@ -12,7 +12,8 @@ function Rewards() {
     const [totalPages, setTotalPages] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [editingBounty, setEditingBounty] = useState(null);
-        const [formData, setFormData] = useState({
+    const [userRole, setUserRole] = useState(null);
+    const [formData, setFormData] = useState({
             description: '',
             reward: '',
             status: '',
@@ -24,7 +25,10 @@ function Rewards() {
     useEffect(() => {
         fetchBounties(0);
     }, []);
-
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        setUserRole(role);
+    }, []);
     const fetchBounties = async (page = 0) => {
         try {
             const response = await fetch(`http://localhost:8080/Tavern/bounties/getAll?page=${page}&size=${pageSize}`);
@@ -133,7 +137,9 @@ function Rewards() {
         <div>
             <h1>{t('reward.reward_directory')}</h1>
             <button onClick={() => fetchBounties(0)}>{t('reward.load')}</button>
-            <button onClick={() => {
+            {(userRole === 'ADMIN') && (
+
+                <button onClick={() => {
                 setShowForm(!showForm);
                 setEditingBounty(null);
                 setFormData({
@@ -144,6 +150,7 @@ function Rewards() {
                     guild: ''
                 });
             }}>{showForm ? t('reward.cancel') : t('reward.create')}</button>
+            )}
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
                 <form onSubmit={handleSubmit}>
@@ -204,19 +211,21 @@ function Rewards() {
                                 <p>{t('reward.reward')} {bounty.reward}</p>
                                 <p>{t('reward.status')} {bounty.status}</p>
                                 <p>{t('reward.difficulty')}: {bounty.difficulty}</p>
-                                <button onClick={() => fetchBountiesDetails(bounty.bountyID)}>{t('reward.details')}</button>
-                                <button onClick={() => {
+                                {(userRole === 'USER' || userRole === 'ADMIN') && (
+                                    <div>
+                                    <button onClick={() => fetchBountiesDetails(bounty.bountyID)}>{t('reward.details')}</button><button onClick={() => {
                                     startEdit(bounty);
                                     setShowForm(!showForm);
                                 }}>{t('reward.edit')}
                                 </button>
                                 <button onClick={() => handleDelete(bounty.bountyID)}>{t('reward.delete')}</button>
+                                    </div>
+                                    )}
                             </div>
                         ))}
                     </div>
                     <div>
                         <button onClick={() => fetchBounties(currentPage - 1)} disabled={currentPage === 0}>{t('reward.previous')}</button>
-                        <span>{t('reward.page')} {currentPage + 1} {t('reward.of')} {totalPages}</span>
                         <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('reward.next')}</button>
                     </div>
                 </div>
