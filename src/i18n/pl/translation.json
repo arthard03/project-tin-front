@@ -71,7 +71,9 @@
     "password_invalid": "Hasło musi mieć co najmniej 10 znaków.",
     "have_acc": "Masz już konto? Zaloguj się",
     "dont_have_acc": "Nie masz konta? Zarejestruj się",
-    "error": "Wystąpił nieoczekiwany błąd."
+    "error": "Wystąpił nieoczekiwany błąd.",
+    "error_user": "Użytkownik o tej nazwie już istnieje",
+    "error_login": "Hasło jest nieprawidłowe"
 
   },
   "playerPage": {

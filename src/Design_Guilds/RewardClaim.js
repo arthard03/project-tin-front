@@ -54,7 +54,7 @@ function RewardClaim() {
             setSelectedBountiesClaim(data);
             setError('');
         } catch (err) {
-            setError(err.message);
+            setError(t('error.error'));
         }
     };
 
@@ -84,7 +84,9 @@ function RewardClaim() {
                 body: JSON.stringify(formData),
             });
 
-            if (!response.ok) throw new Error('Failed to save bounty claim.');
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             setShowForm(false);
             setEditingBountyClaim(null);
             setFormData({
@@ -123,7 +125,9 @@ function RewardClaim() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
-            if (!response.ok) throw new Error('Failed to delete bounty claim.');
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }            
             fetchBountiesClaims(0);
         } catch (err) {
             setError(err.message);

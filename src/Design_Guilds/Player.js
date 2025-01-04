@@ -51,7 +51,7 @@ const Player = () => {
             setSelectedPlayer(data);
             setError('');
         } catch (err) {
-            setError(err.message);
+            setError(t('error.error'));
         }
     };
 
@@ -71,7 +71,7 @@ const Player = () => {
                 ? `http://localhost:8080/Tavern/players/${editingPlayer.id}`
                 : 'http://localhost:8080/Tavern/players';
 
-            await fetch(url, {
+            const response=    await fetch(url, {
                 method: editingPlayer ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,6 +79,9 @@ const Player = () => {
                 },
                 body: JSON.stringify(formData)
             });
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             setShowForm(false);
             setEditingPlayer(null);
             setFormData({
@@ -111,12 +114,15 @@ const Player = () => {
             if (!token) {
                 throw new Error(t('error.error'));
             }
-            await fetch(`http://localhost:8080/Tavern/players/${playerId}`, {
+           const response= await fetch(`http://localhost:8080/Tavern/players/${playerId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             fetchPlayers(0);
         } catch (err) {
             setError(err.message);

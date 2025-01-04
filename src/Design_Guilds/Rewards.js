@@ -52,7 +52,7 @@ function Rewards() {
             setSelectedBounty(data);
             setError('');
         } catch (err) {
-            setError(err.message);
+            setError(t('error.error'));
         }
     };
     const handleSubmit = async (e) => {
@@ -71,7 +71,7 @@ function Rewards() {
                 ? `http://localhost:8080/Tavern/bounties/${editingBounty.bountyID}`
                 : 'http://localhost:8080/Tavern/bounties';
 
-            await fetch(url, {
+         const response=   await fetch(url, {
                 method: editingBounty ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,6 +79,9 @@ function Rewards() {
                 },
                 body: JSON.stringify(formData)
             });
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             setShowForm(false);
             setEditingBounty(null);
             setFormData({
@@ -112,12 +115,15 @@ function Rewards() {
             if (!token) {
                 throw new Error(t('error.error'));
             }
-            await fetch(`http://localhost:8080/Tavern/bounties/${bountyId}`, {
+        const response=    await fetch(`http://localhost:8080/Tavern/bounties/${bountyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             fetchBounties(0);
         } catch (err) {
             setError(err.message);

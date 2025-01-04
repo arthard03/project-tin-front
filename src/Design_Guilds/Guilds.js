@@ -51,7 +51,7 @@ function Guilds() {
             setSelectedGuild(data);
             setError('');
         } catch (err) {
-            setError(err.message);
+                setError(t('error.error'));
         }
     };
     const handleSubmit = async (e) => {
@@ -70,7 +70,7 @@ function Guilds() {
                 ? `http://localhost:8080/Tavern/guilds/${editingGuild.guildID}`
                 : 'http://localhost:8080/Tavern/guilds';
 
-            await fetch(url, {
+          const response=  await fetch(url, {
                 method: editingGuild ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,10 +85,13 @@ function Guilds() {
                 description: '',
                 members: '',
             });
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             setValidationErrors({});
             fetchGuilds(currentPage);
         } catch (err) {
-            setError(err.message);
+            setError(t('error.error'));
         }
     };
     const startEdit = (guild) => {
@@ -106,12 +109,15 @@ function Guilds() {
             if (!token) {
                 throw new Error(t('error.error'));
             }
-            await fetch(`http://localhost:8080/Tavern/guilds/${guildId}`, {
+            const response =  await fetch(`http://localhost:8080/Tavern/guilds/${guildId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if (!response.ok) {
+                throw new Error(t('error.error'));
+            }
             fetchGuilds(0);
         } catch (err) {
             setError(err.message);

@@ -74,7 +74,9 @@
     "password_invalid": "Password must be at least 10 characters.",
     "have_acc": "Already have an account? Login",
     "dont_have_acc": "Don't have an account? Register",
-    "error": "An unexpected error occurred."
+    "error": "An unexpected error occurred.",
+    "error_user": "User with that username already exists",
+    "error_login": "Password is not valid"
   },
 "playerPage": {
   "playerDirectory": "Players Directory",

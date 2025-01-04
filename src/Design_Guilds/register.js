@@ -39,7 +39,7 @@ function AuthenticationPage() {
             setIsRegistering(false);
         } catch (error) {
             if (error.response && error.response.data) {
-                setErrors({ message: error.response.data });
+                setErrors({ message: t('player.error_user') });
             } else {
                 setErrors({ message: t('player.error') });
             }
@@ -65,7 +65,7 @@ function AuthenticationPage() {
             if (error.response && error.response.data) {
                 setErrors({ message: error.response.data });
             } else {
-                setErrors({ message: t('player.error') });
+                setErrors({ message: t('player.error_login') });
             }
         }
     };
