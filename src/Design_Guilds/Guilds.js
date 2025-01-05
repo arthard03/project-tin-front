@@ -200,7 +200,7 @@ function Guilds() {
                     </div>
                     <div>
                         <button onClick={() => fetchGuilds(currentPage - 1)} disabled={currentPage === 0}>{t('guilds.pagination.previous')}</button>
-                        <button onClick={() => fetchGuilds(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('guilds.pagination.next')}</button>
+                        <button onClick={() => fetchGuilds(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('guilds.pagination.next')}</button>
                     </div>
                 </div>
             )}

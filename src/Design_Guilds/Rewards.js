@@ -227,7 +227,7 @@ function Rewards() {
                     </div>
                     <div>
                         <button onClick={() => fetchBounties(currentPage - 1)} disabled={currentPage === 0}>{t('reward.previous')}</button>
-                        <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('reward.next')}</button>
+                        <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('reward.next')}</button>
                     </div>
                 </div>
             )}

@@ -220,7 +220,7 @@ const Player = () => {
 
                     <div>
                         <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>{t('playerPage.previous')}</button>
-                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('playerPage.next')}</button>
+                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('playerPage.next')}</button>
                     </div>
 
                 </div>

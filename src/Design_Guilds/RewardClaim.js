@@ -222,7 +222,7 @@ function RewardClaim() {
 
                     <div>
                         <button onClick={() => fetchBountiesClaims(currentPage - 1)} disabled={currentPage === 0}>{t('rewardClaim.previous')}</button>
-                        <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage === totalPages - 1}>{t('rewardClaim.next')}</button>
+                        <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('rewardClaim.next')}</button>
                     </div>
                 </div>
             )}
