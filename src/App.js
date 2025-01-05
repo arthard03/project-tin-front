@@ -6,13 +6,14 @@ import Rewards from './Design_Guilds/Rewards';
 import RewardClaim from './Design_Guilds/RewardClaim';
 import Player from './Design_Guilds/Player';
 import AuthenticationPage from './Design_Guilds/register';
+import  Users from './Design_Guilds/Users';
 import './i18n/i18n';
 import './App.css';
 
 function App() {
     const { t, i18n } = useTranslation();
     const isAuthenticated = !!localStorage.getItem('token');
-
+const adminPanel=!!localStorage.getItem('role');
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role')
@@ -39,6 +40,9 @@ function App() {
                                 {t('nav.logout')}
                             </button></li>
                         )}
+                        {adminPanel && (
+                            <li><Link to="/users">{t('user.link')}</Link></li>
+                        )}
                         <li>
                             <button
                                 onClick={toggleLanguage}
@@ -56,6 +60,7 @@ function App() {
                         <Route path="/rewards" element={<Rewards />} />
                         <Route path="/reward_claim" element={<RewardClaim />} />
                         <Route path="/player" element={<Player />} />
+                        <Route path="/users" element={<Users />} />
                         <Route path="*" element={<Navigate to="/guilds" />} />
                     </Routes>
                 </div>

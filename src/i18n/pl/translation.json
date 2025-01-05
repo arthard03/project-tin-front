@@ -210,5 +210,13 @@
     "finishDate_invalid": "Data zakończenia nie może być wcześniejsza niż data roszczenia",
     "playerID_required": "ID gracza jest wymagane",
     "playerID_invalid": "ID gracza musi być prawidłową liczbą całkowitą"
+  },
+  "user": {
+    "name": "Imię",
+    "role": "Rola",
+    "load": "Obciążenie",
+    "directory": "Katalog użytkownika",
+    "username": "Nazwa użytkownika",
+    "link": "Panel administracyjny"
   }
 }

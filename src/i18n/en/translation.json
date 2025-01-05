@@ -209,5 +209,14 @@
   "finishDate_invalid": "Finish Date cannot be earlier than Claim Date",
   "playerID_required": "Player ID is required",
   "playerID_invalid": "Player ID must be a valid integer"
-}
+},
+  "user": {
+    "name": "Name",
+    "role": "Role",
+    "load": "Load",
+    "directory": "Directory of User",
+    "username": "Username",
+    "link": "Admin Panel"
+
+  }
 }
