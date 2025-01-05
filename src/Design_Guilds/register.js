@@ -97,8 +97,7 @@ function AuthenticationPage() {
             {isRegistering && showRoleSelect && (
                 <select
                     value={selectedRole}
-                    onChange={(e) => setSelectedRole(e.target.value)}
-                >
+                    onChange={(e) => setSelectedRole(e.target.value)}>
                     <option value="USER">User</option>
                     <option value="ADMIN">Admin</option>
                 </select>
