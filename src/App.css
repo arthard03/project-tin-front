@@ -52,7 +52,7 @@ ul {
 li {
   margin: 10px 0;
   padding: 10px;
-  background: color(grey);
+  background: rgba(80, 78, 78, 0.64);
   border-radius: 5px;
 }
 
@@ -68,7 +68,7 @@ li {
   max-height: 400px;
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 5px 15px color(black);
+  box-shadow: 0 5px 15px #1e0b0b;
 }
 
 form {

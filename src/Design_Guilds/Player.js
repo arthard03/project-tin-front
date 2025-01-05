@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from 'react';
-import { validatePlayerData } from '../Validation/playerValidation'; // Import the validation module
+import { validatePlayerData } from '../Validation/playerValidation';
 import { useTranslation } from 'react-i18next';
 
 const Player = () => {
@@ -207,7 +207,8 @@ const Player = () => {
                                 {(userRole === 'USER' || userRole === 'ADMIN') && (
                                     <div>
                                         <button
-                                            onClick={() => fetchPlayerDetails(player.id)}>{t('playerPage.details')}</button><button onClick={() => {
+                                            onClick={() => fetchPlayerDetails(player.id)}>{t('playerPage.details')}</button>
+                                        <button onClick={() => {
                                             startEdit(player);
                                             setShowForm(!showForm);
                                         }}>{t('playerPage.edit')}</button>
