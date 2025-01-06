@@ -1,25 +1,22 @@
 body {
   margin: 0;
-  font-family: 'Georgia', serif;
+  font-family: 'Franklin Gothic Demi', serif;
   background: url('https://cdna.artstation.com/p/assets/images/images/016/322/076/large/jordan-snee-3dga-08.jpg?1551733292') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
+  font-size: 17px;
+
 }
 
 .navbar {
   background: #2b1d0e;
-  padding: 10px 20px;
   display: flex;
   justify-content: flex-end;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 .nav-links {
-  list-style: none;
   display: flex;
   gap: 10px;
-  padding: 0;
-  margin: 0;
 }
 
 .nav-links a,
@@ -29,7 +26,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .content {
@@ -37,7 +34,6 @@ body {
   background: rgba(40, 23, 4, 0.76);
   max-width: 800px;
   margin: 20px auto;
-  border-radius: 8px;
 }
 
 h1, strong {
@@ -46,14 +42,12 @@ h1, strong {
 
 ul {
   list-style: none;
-  padding: 0;
 }
 
 li {
   margin: 10px 0;
   padding: 10px;
   background: rgba(108, 107, 97, 0.4);
-  border-radius: 5px;
 }
 
 .page-image {
@@ -65,27 +59,18 @@ li {
 
 .page-image img {
   width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px #1e0b0b;
 }
 
 form {
   background: rgba(30, 20, 10, 0.7);
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #8b4513;
+  padding: 10px;
 }
 
 form input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #8b4513;
   color: #d4b483;
-  border-radius: 4px;
 }
 
 .error {
