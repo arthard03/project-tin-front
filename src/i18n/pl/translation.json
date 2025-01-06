@@ -91,7 +91,9 @@
     "dont_have_acc": "Nie masz konta? Zarejestruj się",
     "error": "Wystąpił nieoczekiwany błąd.",
     "error_user": "Użytkownik o tej nazwie już istnieje",
-    "error_login": "Hasło jest nieprawidłowe"
+    "error_login": "Hasło jest nieprawidłowe",
+    "server": "Błąd serwera"
+
 
   },
   "playerPage": {

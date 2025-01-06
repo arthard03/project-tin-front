@@ -91,7 +91,8 @@
     "dont_have_acc": "Don't have an account? Register",
     "error": "An unexpected error occurred.",
     "error_user": "User with that username already exists",
-    "error_login": "Password is not valid"
+    "error_login": "Password is not valid",
+    "server": "Server Error"
   },
 "playerPage": {
   "playerDirectory": "Players Directory",

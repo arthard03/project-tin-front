@@ -44,10 +44,14 @@ function Users() {
                         <p>{t('user.role')}: {user.role}</p>
                     </div>
                 ))}
-            </div>
+            </div>  
             <div>
                 <button onClick={() => fetchUsers(currentPage - 1)} disabled={currentPage === 0}>{t('reward.previous')}</button>
                 <button onClick={() => fetchUsers(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('reward.next')}</button>
+            </div>
+            <div className="page-image">
+                <img src="https://wiki.sureai.net/images/thumb/b/bc/NE-npc-Gervasius.jpg/250px-NE-npc-Gervasius.jpg"
+                     alt="Guild Visual"/>
             </div>
         </div>
     );

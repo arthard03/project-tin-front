@@ -44,6 +44,9 @@ function AuthenticationPage() {
             } else {
                 setErrors({ message: t('player.error') });
             }
+            if(error.code) {
+                setErrors({ message: t('player.server') });
+            }
         }
     };
 

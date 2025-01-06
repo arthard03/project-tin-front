@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Guilds from './Design_Guilds/Guilds';
@@ -11,9 +11,13 @@ import './i18n/i18n';
 import './App.css';
 
 function App() {
+    const [userRole, setUserRole] = useState(null);
     const { t, i18n } = useTranslation();
     const isAuthenticated = !!localStorage.getItem('token');
-const adminPanel=!!localStorage.getItem('role');
+    useEffect(() => {
+        const role = localStorage.getItem('role');
+        setUserRole(role);
+    }, []);
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role')
@@ -40,7 +44,7 @@ const adminPanel=!!localStorage.getItem('role');
                                 {t('nav.logout')}
                             </button></li>
                         )}
-                        {adminPanel && (
+                        {( userRole === 'ADMIN') && (
                             <li><Link to="/users">{t('user.link')}</Link></li>
                         )}
                         <li>
