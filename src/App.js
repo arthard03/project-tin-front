@@ -40,9 +40,7 @@ function App() {
                         <li><Link to="/reward_claim">{t('nav.rewardClaim')}</Link></li>
                         <li><Link to="/player">{t('nav.player')}</Link></li>
                         {isAuthenticated && (
-                            <li><button onClick={handleLogout} className="nav-link-button">
-                                {t('nav.logout')}
-                            </button></li>
+                            <li><button onClick={handleLogout} className="nav-link-button">{t('nav.logout')}</button></li>
                         )}
                         {( userRole === 'ADMIN') && (
                             <li><Link to="/users">{t('user.link')}</Link></li>
