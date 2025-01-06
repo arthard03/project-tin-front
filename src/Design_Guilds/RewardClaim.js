@@ -203,8 +203,8 @@ function RewardClaim() {
                         {bountiesClaim.map(bountyClaim => (
                             <div key={bountyClaim.claimID}>
                                 <p><strong>{t('rewardClaim.n_')}</strong></p>
-                                <p>{t('rewardClaim.claimDate')} {bountyClaim.claimDate}</p>
-                                <p>{t('rewardClaim.finishDate')} {bountyClaim.finishDate}</p>
+                                <p>{t('rewardClaim.claimDate')} {new Date(bountyClaim.claimDate).toLocaleDateString()}</p>
+                                <p>{t('rewardClaim.finishDate')} {new Date(bountyClaim.finishDate).toLocaleDateString()}</p>
                                 {( userRole === 'ADMIN') && (
                                     <div>
                                 <button onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>{t('rewardClaim.details')}</button>
