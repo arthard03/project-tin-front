@@ -92,10 +92,9 @@ form input {
 }
 
 .popup-window {
-  background: #a19191;
+  color: #d4b483;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   max-width: 400px;
   width: 100%;
@@ -115,11 +114,11 @@ form input {
 }
 
 .popup-actions button:first-of-type {
-  background-color: #e63946; /* Confirm Delete */
+  background-color: #e63946;
   color: #fff;
 }
 
 .popup-actions button:last-of-type {
-  background-color: #ccc; /* Cancel */
+  background-color: #f0e4c3;
   color: #000;
 }
