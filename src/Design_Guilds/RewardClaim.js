@@ -13,6 +13,8 @@ function RewardClaim() {
     const [showForm, setShowForm] = useState(false);
     const [editingBountyClaim, setEditingBountyClaim] = useState(null);
     const [userRole, setUserRole] = useState(null);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [bountyrToDelete, setBountyToDelete] = useState(null);
     const [formData, setFormData] = useState({
         bountyID: '',
         claimDate: '',
@@ -117,13 +119,20 @@ function RewardClaim() {
         setShowForm(true);
     };
 
-    const handleDelete = async (bountyClaimId) => {
+    const handleDelete = async (bountyClaimId=null,action=null) => {
+        if (action === 'open') {
+            setBountyToDelete(bountyClaimId);
+            setShowDeletePopup(true);
+        } else if (action === 'close') {
+            setBountyToDelete(null);
+            setShowDeletePopup(false);
+        } else if (action === 'confirm' && bountyrToDelete) {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error(t('error.error'));
             }
-            const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/${bountyClaimId}`, {
+            const response = await fetch(`http://localhost:8080/Tavern/bountiesClaim/${bountyrToDelete}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -131,10 +140,14 @@ function RewardClaim() {
             });
             if (!response.ok) {
                 throw new Error(t('error.guild_delete'));
-            }            
+            }
             fetchBountiesClaims(0);
         } catch (err) {
             setError(err.message);
+        } finally {
+                setBountyToDelete(null);
+            setShowDeletePopup(false);
+            }
         }
     };
 
@@ -142,18 +155,18 @@ function RewardClaim() {
         <div>
             <h1>{t('rewardClaim.directory')}</h1>
             <button onClick={() => fetchBountiesClaims(0)}>{t('rewardClaim.load')}</button>
-            {( userRole === 'ADMIN') && (
+            {(userRole === 'ADMIN') && (
                 <button
-                onClick={() => {
-                    setShowForm(!showForm);
-                    setEditingBountyClaim(null);
-                    setFormData({
-                        bountyID: '',
-                        claimDate: '',
-                        finishDate: '',
-                        playerID: ''
-                    });
-                }}>{showForm ? t('rewardClaim.cancel') : t('rewardClaim.create')}</button>
+                    onClick={() => {
+                        setShowForm(!showForm);
+                        setEditingBountyClaim(null);
+                        setFormData({
+                            bountyID: '',
+                            claimDate: '',
+                            finishDate: '',
+                            playerID: ''
+                        });
+                    }}>{showForm ? t('rewardClaim.cancel') : t('rewardClaim.create')}</button>
             )}
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
@@ -194,7 +207,8 @@ function RewardClaim() {
                         />
                         {validationErrors.playerID && <p style={{color: 'red'}}>{validationErrors.playerID}</p>}
                     </div>
-                    <button type="submit">{editingBountyClaim ? t('rewardClaim.update') :t('rewardClaim.submit') }</button>
+                    <button
+                        type="submit">{editingBountyClaim ? t('rewardClaim.update') : t('rewardClaim.submit')}</button>
                 </form>
             )}
             {!selectedBountiesClaim && (
@@ -205,24 +219,28 @@ function RewardClaim() {
                                 <p><strong>{t('rewardClaim.n_')}</strong></p>
                                 <p>{t('rewardClaim.claimDate')} {new Date(bountyClaim.claimDate).toLocaleDateString()}</p>
                                 <p>{t('rewardClaim.finishDate')} {new Date(bountyClaim.finishDate).toLocaleDateString()}</p>
-                                {( userRole === 'ADMIN') && (
+                                {(userRole === 'ADMIN') && (
                                     <div>
-                                <button onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>{t('rewardClaim.details')}</button>
-                                <button onClick={() => {
-                                    startEdit(bountyClaim);
-                                    setShowForm(true);
-                                }}>{t('rewardClaim.edit')}
-                                </button>
-                                <button onClick={() => handleDelete(bountyClaim.claimID)}>{t('rewardClaim.delete')}</button>
+                                        <button
+                                            onClick={() => fetchBountiesClaimDetails(bountyClaim.claimID)}>{t('rewardClaim.details')}</button>
+                                        <button onClick={() => {
+                                            startEdit(bountyClaim);
+                                            setShowForm(true);
+                                        }}>{t('rewardClaim.edit')}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(bountyClaim.claimID, 'open')}>{t('rewardClaim.delete')}</button>
                                     </div>
-                                    )}
+                                )}
                             </div>
                         ))}
                     </div>
 
                     <div>
-                        <button onClick={() => fetchBountiesClaims(currentPage - 1)} disabled={currentPage === 0}>{t('rewardClaim.previous')}</button>
-                        <button onClick={() => fetchBountiesClaims(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('rewardClaim.next')}</button>
+                        <button onClick={() => fetchBountiesClaims(currentPage - 1)}
+                                disabled={currentPage === 0}>{t('rewardClaim.previous')}</button>
+                        <button onClick={() => fetchBountiesClaims(currentPage + 1)}
+                                disabled={currentPage >= totalPages - 1}>{t('rewardClaim.next')}</button>
                     </div>
                 </div>
             )}
@@ -264,6 +282,24 @@ function RewardClaim() {
                 <img
                     src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRn40pE1BoWV7_cztAfYkT6_gLJ0wgBEwN3L5Yd_ZZJRYp4zKPJ"
                     alt="Guild Visual"/>
+            </div>
+            <div>
+                {showDeletePopup && (
+                    <div className="popup-overlay">
+                        <div className="popup-window">
+                            <h3><p>{t('rewardClaim.directory')}</p></h3>
+                            <p>{t('rewardClaim.comment')}</p>
+                            <div className="popup-actions">
+                                <button onClick={() => handleDelete(null, 'confirm')}>
+                                    {t('rewardClaim.submit')}
+                                </button>
+                                <button onClick={() => handleDelete(null, 'close')}>
+                                    {t('rewardClaim.cancel')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

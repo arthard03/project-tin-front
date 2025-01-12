@@ -28,6 +28,8 @@
     "logout": "Logout"
   },
   "guilds": {
+    "confirm": "Confirm deletion",
+    "delete": "You want to delete guild",
     "gold": "Gold",
     "directory": "Guilds Directory",
     "loadGuilds": "Load Guilds",
@@ -95,6 +97,7 @@
     "server": "Server Error"
   },
 "playerPage": {
+  "comment": "Do you really want to delete this player",
   "playerDirectory": "Players Directory",
   "load": "Load Players",
   "create": "Create Player",
@@ -173,6 +176,7 @@
     "n_": "Bounty"
   },
 "rewardClaim": {
+  "comment": "Do you really want to delete this  Bounty",
   "n_": "Bounty Claim",
   "directory": "Bounty Claims Directory",
   "load": "Load Bounty Claims",

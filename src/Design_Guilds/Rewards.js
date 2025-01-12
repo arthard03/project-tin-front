@@ -13,6 +13,8 @@ function Rewards() {
     const [showForm, setShowForm] = useState(false);
     const [editingBounty, setEditingBounty] = useState(null);
     const [userRole, setUserRole] = useState(null);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [bountyrToDelete, setBountyToDelete] = useState(null);
     const [formData, setFormData] = useState({
             description: '',
             reward: '',
@@ -113,13 +115,20 @@ function Rewards() {
         });
         setShowForm(true);
     };
-    const handleDelete = async (bountyId) => {
+    const handleDelete = async (bountyId=null,action=null) => {
+        if (action === 'open') {
+            setBountyToDelete(bountyId);
+            setShowDeletePopup(true);
+        } else if (action === 'close') {
+            setBountyToDelete(null);
+            setShowDeletePopup(false);
+        } else if (action === 'confirm' && bountyrToDelete) {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error(t('error.error'));
             }
-        const response=    await fetch(`http://localhost:8080/Tavern/bounties/${bountyId}`, {
+        const response=    await fetch(`http://localhost:8080/Tavern/bounties/${bountyrToDelete}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -131,6 +140,10 @@ function Rewards() {
             fetchBounties(0);
         } catch (err) {
             setError(err.message);
+        }finally {
+            setBountyToDelete(null);
+            setShowDeletePopup(false)
+        }
         }
     };
     return (
@@ -140,16 +153,16 @@ function Rewards() {
             {(userRole === 'ADMIN') && (
 
                 <button onClick={() => {
-                setShowForm(!showForm);
-                setEditingBounty(null);
-                setFormData({
-                    description: '',
-                    reward: '',
-                    status: '',
-                    difficulty: '',
-                    guild: ''
-                });
-            }}>{showForm ? t('reward.cancel') : t('reward.create')}</button>
+                    setShowForm(!showForm);
+                    setEditingBounty(null);
+                    setFormData({
+                        description: '',
+                        reward: '',
+                        status: '',
+                        difficulty: '',
+                        guild: ''
+                    });
+                }}>{showForm ? t('reward.cancel') : t('reward.create')}</button>
             )}
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
@@ -214,20 +227,25 @@ function Rewards() {
                                 <p>{t('reward.difficulty')}: {bounty.difficulty}</p>
                                 {(userRole === 'USER' || userRole === 'ADMIN') && (
                                     <div>
-                                    <button onClick={() => fetchBountiesDetails(bounty.bountyID)}>{t('reward.details')}</button><button onClick={() => {
-                                    startEdit(bounty);
-                                    setShowForm(!showForm);
-                                }}>{t('reward.edit')}
-                                </button>
-                                <button onClick={() => handleDelete(bounty.bountyID)}>{t('reward.delete')}</button>
+                                        <button
+                                            onClick={() => fetchBountiesDetails(bounty.bountyID)}>{t('reward.details')}</button>
+                                        <button onClick={() => {
+                                            startEdit(bounty);
+                                            setShowForm(!showForm);
+                                        }}>{t('reward.edit')}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(bounty.bountyID, 'open')}>{t('playerPage.delete')}</button>
                                     </div>
-                                    )}
+                                )}
                             </div>
                         ))}
                     </div>
                     <div>
-                        <button onClick={() => fetchBounties(currentPage - 1)} disabled={currentPage === 0}>{t('reward.previous')}</button>
-                        <button onClick={() => fetchBounties(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('reward.next')}</button>
+                        <button onClick={() => fetchBounties(currentPage - 1)}
+                                disabled={currentPage === 0}>{t('reward.previous')}</button>
+                        <button onClick={() => fetchBounties(currentPage + 1)}
+                                disabled={currentPage >= totalPages - 1}>{t('reward.next')}</button>
                     </div>
                 </div>
             )}
@@ -269,6 +287,24 @@ function Rewards() {
             <div className="page-image">
                 <img src="https://pbs.twimg.com/media/FsGU-mHX0AMVvYi.jpg"
                      alt="Guild Visual"/>
+            </div>
+            <div>
+                {showDeletePopup && (
+                    <div className="popup-overlay">
+                        <div className="popup-window">
+                            <h3><p>{t('rewardClaim.directory')}</p></h3>
+                            <p>{t('rewardClaim.comment')}</p>
+                            <div className="popup-actions">
+                                <button onClick={() => handleDelete(null, 'confirm')}>
+                                    {t('rewardClaim.submit')}
+                                </button>
+                                <button onClick={() => handleDelete(null, 'close')}>
+                                    {t('rewardClaim.cancel')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

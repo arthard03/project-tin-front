@@ -3,7 +3,7 @@ export const validateAuthForm = (username, password,t) => {
 
     if (!username.trim()) {
         errors.username = t('player.username_required');
-    } else if (username.length > 30) {
+    } else if (username.length < 10) {
         errors.username = t('player.username_invalid');
     }
 

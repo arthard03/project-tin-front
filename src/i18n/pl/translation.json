@@ -28,6 +28,8 @@
     "logout": "Wyloguj"
   },
   "guilds": {
+    "confirm": "Potwierdzenie usunięcia gildii",
+    "delete": "Chcesz usunąć gildię",
     "gold": "Zlota",
     "directory": "Katalog Gildii",
     "loadGuilds": "Załaduj Gildie",
@@ -97,6 +99,7 @@
 
   },
   "playerPage": {
+    "comment": "Czy naprawdę chcesz usunąć tego gracza?",
     "back": "Powrót do listy",
     "playerDirectory": "Katalog Graczy",
     "load": "Wczytaj Graczy",
@@ -175,6 +178,7 @@
     "n_": "Nagroda"
   },
   "rewardClaim": {
+    "comment": "Czy naprawdę chcesz usunąć tę Nagrodę?",
     "n_": "Zgłoszenie nagrody",
     "directory": "Katalog Roszczeń Nagród",
     "load": "Wczytaj Roszczenia Nagród",

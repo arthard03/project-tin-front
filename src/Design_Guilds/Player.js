@@ -13,6 +13,8 @@ const Player = () => {
     const [showForm, setShowForm] = useState(false);
     const [editingPlayer, setEditingPlayer] = useState(null);
     const [userRole, setUserRole] = useState(null);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [playerToDelete, setPlayerToDelete] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         clazz: '',
@@ -111,25 +113,35 @@ const Player = () => {
         });
         setShowForm(true);
     };
-
-    const handleDelete = async (playerId) => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                throw new Error(t('error.error'));
-            }
-           const response= await fetch(`http://localhost:8080/Tavern/players/${playerId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const handleDelete = async (playerId = null, action = null) => {
+        if (action === 'open') {
+            setPlayerToDelete(playerId);
+            setShowDeletePopup(true);
+        } else if (action === 'close') {
+            setPlayerToDelete(null);
+            setShowDeletePopup(false);
+        } else if (action === 'confirm' && playerToDelete) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error(t('error.error'));
                 }
-            });
-            if (!response.ok) {
-                throw new Error(t('error.player_d'));
+                const response = await fetch(`http://localhost:8080/Tavern/players/${playerToDelete}`, {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error(t('error.player_d'));
+                }
+                fetchPlayers(0);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setPlayerToDelete(null);
+                setShowDeletePopup(false);           
             }
-            fetchPlayers(0);
-        } catch (err) {
-            setError(err.message);
         }
     };
 
@@ -138,16 +150,16 @@ const Player = () => {
             <h1>{t('playerPage.playerDirectory')}</h1>
             <button onClick={() => fetchPlayers(0)}>{t('playerPage.load')}</button>
             {(userRole === 'USER' || userRole === 'ADMIN') && (
-            <button onClick={() => {
-                setShowForm(!showForm);
-                setEditingPlayer(null);
-                setFormData({
-                    name: '',
-                    clazz: '',
-                    speciality: '',
-                    persuasionLevel: ''
-                });
-            }}>{showForm ? t('playerPage.cancel') : t('playerPage.create')}</button>
+                <button onClick={() => {
+                    setShowForm(!showForm);
+                    setEditingPlayer(null);
+                    setFormData({
+                        name: '',
+                        clazz: '',
+                        speciality: '',
+                        persuasionLevel: ''
+                    });
+                }}>{showForm ? t('playerPage.cancel') : t('playerPage.create')}</button>
             )}
 
             {error && <p style={{color: 'red'}}>{error}</p>}
@@ -212,7 +224,9 @@ const Player = () => {
                                             startEdit(player);
                                             setShowForm(!showForm);
                                         }}>{t('playerPage.edit')}</button>
-                                        <button onClick={() => handleDelete(player.id)}>{t('playerPage.delete')}</button>
+                                        <button onClick={() => handleDelete(player.id, 'open')}>
+                                            {t('playerPage.delete')}
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -220,8 +234,10 @@ const Player = () => {
                     </div>
 
                     <div>
-                        <button onClick={() => fetchPlayers(currentPage - 1)} disabled={currentPage === 0}>{t('playerPage.previous')}</button>
-                        <button onClick={() => fetchPlayers(currentPage + 1)} disabled={currentPage >= totalPages - 1}>{t('playerPage.next')}</button>
+                        <button onClick={() => fetchPlayers(currentPage - 1)}
+                                disabled={currentPage === 0}>{t('playerPage.previous')}</button>
+                        <button onClick={() => fetchPlayers(currentPage + 1)}
+                                disabled={currentPage >= totalPages - 1}>{t('playerPage.next')}</button>
                     </div>
 
                 </div>
@@ -255,6 +271,24 @@ const Player = () => {
                 <img
                     src="https://preview.redd.it/custom-class-concept-magefist-a-more-immersive-roleplay-v0-syb2s83a4a6a1.jpg?width=1000&format=pjpg&auto=webp&s=a6d9b497fc8f777f8721e67410aa603ef9610175"
                     alt="Guild Visual"/>
+            </div>
+            <div>
+                {showDeletePopup && (
+                    <div className="popup-overlay">
+                        <div className="popup-window">
+                            <h3><p>{t('playerPage.playerDirectory')}</p></h3>
+                            <p>{t('playerPage.comment')}</p>
+                            <div className="popup-actions">
+                                <button onClick={() => handleDelete(null, 'confirm')}>
+                                    {t('playerPage.submit')}
+                                </button>
+                                <button onClick={() => handleDelete(null, 'close')}>
+                                    {t('playerPage.cancel')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

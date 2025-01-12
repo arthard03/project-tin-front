@@ -13,6 +13,8 @@ function Guilds() {
     const [showForm, setShowForm] = useState(false);
     const [editingGuild, setEditingGuild] = useState(null);
     const [userRole, setUserRole] = useState(null);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [guildToDelete, setGuildToDelete] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -55,7 +57,7 @@ function Guilds() {
             setSelectedGuild(data);
             setError('');
         } catch (err) {
-                setError(t('error.guild_details'));
+            setError(t('error.guild_details'));
         }
     };
     const handleSubmit = async (e) => {
@@ -74,7 +76,7 @@ function Guilds() {
                 ? `http://localhost:8080/Tavern/guilds/${editingGuild.guildID}`
                 : 'http://localhost:8080/Tavern/guilds';
 
-          const response=  await fetch(url, {
+            const response=  await fetch(url, {
                 method: editingGuild ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,26 +109,38 @@ function Guilds() {
         });
         setShowForm(true);
     };
-    const handleDelete = async (guildId) => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                throw new Error(t('error.error'));
-            }
-            const response =  await fetch(`http://localhost:8080/Tavern/guilds/${guildId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const handleDelete = async (guildId = null, action = null) => {
+        if (action === 'open') {
+            setGuildToDelete(guildId);
+            setShowDeletePopup(true);
+        } else if (action === 'close') {
+            setGuildToDelete(null);
+            setShowDeletePopup(false);
+        } else if (action === 'confirm' && guildToDelete) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error(t('error.error'));
                 }
-            });
-            if (!response.ok) {
-                throw new Error(t('error.guild_delete'));
+                const response = await fetch(`http://localhost:8080/Tavern/guilds/${guildToDelete}`, {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(t('error.guild_delete'));
+                }
+                fetchGuilds(0);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setGuildToDelete(null);
+                setShowDeletePopup(false);
             }
-            fetchGuilds(0);
-        } catch (err) {
-            setError(err.message);
         }
     };
+
     return (
         <div>
             <h1>{t('guilds.directory')}</h1>
@@ -134,14 +148,14 @@ function Guilds() {
             {(userRole === 'ADMIN') && (
 
                 <button onClick={() => {
-                setShowForm(!showForm);
-                setEditingGuild(null);
-                setFormData({
-                    name: '',
-                    description: '',
-                    members: ''
-                });
-            }}>{showForm ? t('guilds.cancel') : t('guilds.createGuild')}</button>
+                    setShowForm(!showForm);
+                    setEditingGuild(null);
+                    setFormData({
+                        name: '',
+                        description: '',
+                        members: ''
+                    });
+                }}>{showForm ? t('guilds.cancel') : t('guilds.createGuild')}</button>
             )}
             {error && <p style={{color: 'red'}}>{error}</p>}
             {showForm && (
@@ -186,15 +200,18 @@ function Guilds() {
                                 <p>{t('guilds.form.members.placeholder')} {guild.members}</p>
                                 {( userRole === 'ADMIN') && (
                                     <div>
-                                <button onClick={() => fetchGuildDetails(guild.guildID)}>{t('guilds.actions.details')}</button>
-                                <button onClick={() => {
-                                    startEdit(guild);
-                                    setShowForm(!showForm);
-                                }}>{t('guilds.actions.edit')}
-                                </button>
-                                <button onClick={() => handleDelete(guild.guildID)}>{t('guilds.actions.delete')}</button>
+                                        <button
+                                            onClick={() => fetchGuildDetails(guild.guildID)}>{t('guilds.actions.details')}</button>
+                                        <button onClick={() => {
+                                            startEdit(guild);
+                                            setShowForm(!showForm);
+                                        }}>{t('guilds.actions.edit')}
+                                        </button>
+                                        <button onClick={() => handleDelete(guild.guildID, 'open')}>
+                                            {t('guilds.actions.delete')}
+                                        </button>
                                     </div>
-                                    )}
+                                )}
                             </div>
                         ))}
                     </div>
@@ -229,6 +246,24 @@ function Guilds() {
             <div className="page-image">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoc2NfFplgbKgaz6jXpQAVDCDNVVkjExaO5A&s"
                      alt="Guild Visual"/>
+            </div>
+            <div>
+                {showDeletePopup && (
+                    <div className="popup-overlay">
+                        <div className="popup-window">
+                            <h3><p>{t('guilds.directory')}</p></h3>
+                            <p>{t('guilds.delete')}</p>
+                            <div className="popup-actions">
+                                <button onClick={() => handleDelete(null, 'confirm')}>
+                                    {t('guilds.confirm')}
+                                </button>
+                                <button onClick={() => handleDelete(null, 'close')}>
+                                    {t('guilds.cancel')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
