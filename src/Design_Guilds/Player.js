@@ -24,7 +24,12 @@ const Player = () => {
     const pageSize = 2;
 
     useEffect(() => {
-        fetchPlayers(0);
+        const role = localStorage.getItem('role');
+        if (role === 'ADMIN' || !role) {
+            fetchPlayersdefault(0);
+        } else if (role === 'USER') {
+            fetchPlayers(0);
+        }
     }, []);
     useEffect(() => {
         const role = localStorage.getItem('role');
@@ -32,9 +37,13 @@ const Player = () => {
     }, []);
     const fetchPlayers = async (page = 0) => {
         try {
-            const response = await fetch(`http://localhost:8080/Tavern/players/getAll?page=${page}&size=${pageSize}`);
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:8080/Tavern/players/getAllUser?page=${page}&size=${pageSize}`,{
+                headers: { Authorization: `Bearer ${token}` }
+            });
             const data = await response.json();
             setPlayers(data.content);
+            console.log(error);
             setTotalPages(data.totalPages);
             setCurrentPage(page);
             setSelectedPlayer(null);
@@ -43,7 +52,21 @@ const Player = () => {
             setError(t('error.player_f'));
         }
     };
-
+        const fetchPlayersdefault = async (page = 0) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:8080/Tavern/players/getAll?page=${page}&size=${pageSize}`);
+            const data = await response.json();
+            setPlayers(data.content);
+            console.log(error);
+            setTotalPages(data.totalPages);
+            setCurrentPage(page);
+            setSelectedPlayer(null);
+            setError('');
+        } catch (err) {
+            setError(t('error.player_f'));
+        }
+    };
     const fetchPlayerDetails = async (playerId) => {
         try {
             const token = localStorage.getItem('token');
@@ -97,7 +120,12 @@ const Player = () => {
                 persuasionLevel: ''
             });
             setValidationErrors({});
-            fetchPlayers(currentPage);
+            const role = localStorage.getItem('role');
+            if (role === 'ADMIN' || !role) {
+                fetchPlayersdefault(currentPage);
+            } else if (role === 'USER') {
+                fetchPlayers(currentPage);
+            }
         } catch (err) {
             setError(err.message);
         }
@@ -135,12 +163,16 @@ const Player = () => {
                 if (!response.ok) {
                     throw new Error(t('error.player_d'));
                 }
-                fetchPlayers(0);
-            } catch (err) {
+                const role = localStorage.getItem('role');
+                if (role === 'ADMIN' || !role) {
+                    fetchPlayersdefault(0);
+                } else if (role === 'USER') {
+                    fetchPlayers(0);
+                }            } catch (err) {
                 setError(err.message);
             } finally {
                 setPlayerToDelete(null);
-                setShowDeletePopup(false);           
+                setShowDeletePopup(false);
             }
         }
     };
@@ -148,7 +180,14 @@ const Player = () => {
     return (
         <div>
             <h1>{t('playerPage.playerDirectory')}</h1>
-            <button onClick={() => fetchPlayers(0)}>{t('playerPage.load')}</button>
+            <button onClick={() => {
+                const role = localStorage.getItem('role');
+                if (role === 'ADMIN' || !role) {
+                    fetchPlayersdefault(0);
+                } else if (role === 'USER') {
+                    fetchPlayers(0);
+                }
+            }}>{t('playerPage.load')}</button>
             {(userRole === 'USER' || userRole === 'ADMIN') && (
                 <button onClick={() => {
                     setShowForm(!showForm);
@@ -234,10 +273,22 @@ const Player = () => {
                     </div>
 
                     <div>
-                    <button onClick={() => fetchPlayers(currentPage - 1)}
-                                disabled={currentPage === 0}>{t('playerPage.previous')}</button>
-                        <button onClick={() => fetchPlayers(currentPage + 1)}
-                                disabled={currentPage >= totalPages - 1}>{t('playerPage.next')}</button>
+                        <button onClick={() => {
+                            const role = localStorage.getItem('role');
+                            if (role === 'ADMIN' || !role) {
+                                fetchPlayersdefault(currentPage - 1);
+                            } else if (role === 'USER') {
+                                fetchPlayers(currentPage - 1);
+                            }
+                        }} disabled={currentPage === 0}>{t('playerPage.previous')}</button>
+                        <button onClick={() => {
+                            const role = localStorage.getItem('role');
+                            if (role === 'ADMIN' || !role) {
+                                fetchPlayersdefault(currentPage + 1);
+                            } else if (role === 'USER') {
+                                fetchPlayers(currentPage + 1);
+                            }
+                        }} disabled={currentPage >= totalPages - 1}>{t('playerPage.next')}</button>
                     </div>
 
                 </div>
