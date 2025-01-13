@@ -62,15 +62,15 @@ function AuthenticationPage() {
                 name: username,
                 password: password,
             });
-            localStorage.setItem('token', response.data);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
+            const { token, role } = response.data;
+            localStorage.setItem('token', token);
+            localStorage.setItem('role', role);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             window.location.href = '/guilds';
         } catch (error) {
-            if (error.response && error.response.data) {
-                setErrors({ message: error.response.data });
-            } else {
-                setErrors({ message: t('player.error_login') });
-            }
+            setErrors({
+                message: error.response?.data || t('player.error_login')
+            });
         }
     };
 

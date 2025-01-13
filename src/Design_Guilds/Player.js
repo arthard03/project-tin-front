@@ -86,7 +86,7 @@ const Player = () => {
                 body: JSON.stringify(formData)
             });
             if (!response.ok) {
-                throw new Error(t('error.guild_'));
+                throw new Error(t('error.player_c_u'));
             }
             setShowForm(false);
             setEditingPlayer(null);
@@ -234,7 +234,7 @@ const Player = () => {
                     </div>
 
                     <div>
-                        <button onClick={() => fetchPlayers(currentPage - 1)}
+                    <button onClick={() => fetchPlayers(currentPage - 1)}
                                 disabled={currentPage === 0}>{t('playerPage.previous')}</button>
                         <button onClick={() => fetchPlayers(currentPage + 1)}
                                 disabled={currentPage >= totalPages - 1}>{t('playerPage.next')}</button>
